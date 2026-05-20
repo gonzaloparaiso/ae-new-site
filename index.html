@@ -1,1047 +1,139 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Alba Estrada — Training Norte</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
-
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Alba Estrada · Previsualización</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap"/>
   <style>
-    :root {
-      --bg: #0a0a0a;
-      --bg-rgb: 10, 10, 10;
-      --bg-elev: #111110;
-      --fg: #f5f5f4;
-      --fg-rgb: 245, 245, 244;
-      --muted: rgba(245, 245, 244, 0.55);
-      --faint: rgba(245, 245, 244, 0.32);
-      --line: rgba(245, 245, 244, 0.10);
-      --line-strong: rgba(245, 245, 244, 0.22);
-      --yellow: #f3c148;
-      --ink: #0a0a0a;
-      --hero-overlay: linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.62) 45%, rgba(10,10,10,0.96) 100%);
-      --motion-line: rgba(255,255,255,0.4);
-      --maxw: 1360px;
-      --gutter: clamp(20px, 4vw, 56px);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
-    body {
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      min-height: 100vh;
+      background: #0a0a0a;
+      color: #f5f5f4;
       font-family: 'Montserrat', system-ui, sans-serif;
-      font-weight: 300;
-      font-size: 17px;
-      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-      overflow-x: hidden;
     }
-    img { max-width: 100%; display: block; }
-    a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; cursor: pointer; }
-
-    ::selection { background: var(--yellow); color: var(--ink); }
-
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
-    .reveal.in { opacity: 1; transform: none; }
-
-    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
-
-    .eyebrow {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 56px;
+      padding: clamp(32px, 6vw, 80px);
     }
-    .eyebrow-yellow { color: var(--yellow); }
-    .eyebrow .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background: currentColor; vertical-align: middle; margin-right: 10px; transform: translateY(-2px); }
-
-    h1, h2, h3, h4 { margin: 0; font-weight: 300; letter-spacing: -0.012em; line-height: 1.05; }
-    .display-xl { font-weight: 100; font-size: clamp(54px, 7.8vw, 132px); letter-spacing: -0.025em; line-height: 0.98; }
-    .display-l  { font-weight: 200; font-size: clamp(44px, 5.4vw, 84px); letter-spacing: -0.022em; line-height: 1.02; }
-    .display-m  { font-weight: 300; font-size: clamp(34px, 3.6vw, 56px); letter-spacing: -0.018em; line-height: 1.08; }
-    .display-s  { font-weight: 300; font-size: clamp(26px, 2.4vw, 38px); letter-spacing: -0.012em; line-height: 1.12; }
-    .lede       { font-weight: 300; font-size: clamp(18px, 1.3vw, 22px); line-height: 1.5; color: var(--muted); }
-    .body-l     { font-weight: 300; font-size: 18px; line-height: 1.6; }
-    .small      { font-size: 13px; }
-    .mono       { font-family: 'JetBrains Mono', ui-monospace, monospace; }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 12px;
-      padding: 16px 26px;
-      border-radius: 999px;
-      border: 0.5px solid transparent;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      transition: all .25s cubic-bezier(.2,.7,.2,1);
-      white-space: nowrap;
+    header { text-align: center; display: flex; flex-direction: column; gap: 16px; }
+    .logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
     }
-    .btn-primary { background: var(--yellow); color: var(--ink); }
-    .btn-primary:hover { background: var(--fg); color: var(--bg); transform: translateY(-1px); }
-    .btn-ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
-    .btn-ghost:hover { border-color: var(--fg); background: rgba(255,255,255,0.04); }
-    .btn-text { background: transparent; color: var(--fg); padding: 16px 4px; }
-    .btn-text:hover { color: var(--yellow); }
-    .btn .arrow { display: inline-block; transition: transform .25s ease; }
-    .btn:hover .arrow { transform: translateX(4px); }
-
-    .ph {
+    .mark {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #f3c148;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #0a0a0a; font-weight: 600; font-size: 12px;
+    }
+    .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(245,245,244,0.4);
+      margin-top: 4px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 680px;
+    }
+    .card {
+      display: flex; flex-direction: column; gap: 24px;
+      padding: clamp(28px, 4vw, 40px);
+      border: 0.5px solid rgba(245,245,244,0.15);
+      text-decoration: none;
+      transition: border-color .2s ease, transform .2s ease;
       position: relative;
-      background:
-        repeating-linear-gradient(45deg, rgba(var(--fg-rgb),0.025) 0 12px, transparent 12px 24px),
-        linear-gradient(180deg, rgba(var(--fg-rgb),0.04), rgba(var(--fg-rgb),0.02));
-      border: 0.5px solid var(--line);
       overflow: hidden;
     }
-    .ph::after {
-      content: attr(data-label);
-      position: absolute; inset: 16px;
-      display: flex; align-items: flex-end; justify-content: flex-start;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, #f3c148, transparent);
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+    .card:hover { border-color: rgba(243,193,72,0.4); transform: translateY(-2px); }
+    .card:hover::before { opacity: 1; }
+
+    .card-dark  { background: #111110; color: #f5f5f4; }
+    .card-light { background: #f5f5f4; color: #0a0a0a; border-color: rgba(10,10,10,0.1); }
+    .card-light:hover { border-color: rgba(243,193,72,0.5); }
+    .card-light .card-tag { color: rgba(10,10,10,0.4); }
+    .card-light .card-sub { color: rgba(10,10,10,0.55); }
+
+    .card-tag {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--faint);
-      pointer-events: none;
+      color: rgba(245,245,244,0.4);
     }
-    .ph::before {
-      content: "";
-      position: absolute; top: 16px; right: 16px;
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--yellow); opacity: 0.85;
+    .card-title { font-size: clamp(22px, 3vw, 28px); font-weight: 200; letter-spacing: -0.015em; line-height: 1.1; }
+    .card-sub { font-size: 13px; font-weight: 300; color: rgba(245,245,244,0.5); line-height: 1.5; }
+    .card-arrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #f3c148; margin-top: auto;
+      transition: gap .2s ease;
     }
-    .ph-video::before {
-      content: "";
-      width: 0; height: 0; right: 14px; top: 14px;
-      border-radius: 0;
-      border-left: 10px solid var(--yellow);
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
-      background: transparent;
-    }
+    .card:hover .card-arrow { gap: 14px; }
 
-    section { padding: clamp(80px, 12vw, 180px) 0; }
-    section.dense { padding: clamp(60px, 9vw, 130px) 0; }
-    section.tight { padding: clamp(40px, 6vw, 80px) 0; }
-    .divider { height: 0.5px; background: var(--line); }
+    .swatch { display: flex; gap: 6px; margin-top: 4px; }
+    .sw { width: 14px; height: 14px; border-radius: 50%; border: 0.5px solid rgba(255,255,255,0.1); }
 
-    .hero { padding: 0; min-height: 100vh; position: relative; display: flex; flex-direction: column; }
-
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 50;
-      transition: background .3s ease, backdrop-filter .3s ease, border-color .3s ease;
-      border-bottom: 0.5px solid transparent;
+    footer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(245,245,244,0.2);
+      text-align: center;
     }
-    .nav.scrolled {
-      background: rgba(var(--bg-rgb), 0.72);
-      backdrop-filter: blur(20px) saturate(140%);
-      -webkit-backdrop-filter: blur(20px) saturate(140%);
-      border-bottom-color: var(--line);
-    }
-    .nav-inner {
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: 18px var(--gutter);
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 32px;
-    }
-    .nav-logo {
-      font-weight: 500; font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .nav-logo .mark {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--yellow);
-      display: inline-flex; align-items:center; justify-content:center;
-      color: var(--ink); font-weight: 600; font-size: 12px;
-    }
-    .nav-links { display: flex; gap: 28px; align-items: center; }
-    .nav-links a {
-      font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--muted); transition: color .2s ease; position: relative;
-    }
-    .nav-links a::after {
-      content: ""; position: absolute; left: 0; right: 100%; bottom: -6px;
-      height: 1px; background: var(--yellow); transition: right .25s ease;
-    }
-    .nav-links a:hover { color: var(--fg); }
-    .nav-links a:hover::after { right: 0; }
-    .nav-cta {
-      font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
-      padding: 10px 18px; border-radius: 999px;
-      background: var(--yellow); color: var(--ink);
-      transition: background .2s ease;
-    }
-    .nav-cta:hover { background: var(--fg); color: var(--bg); }
-    @media (max-width: 880px) { .nav-links { display: none; } }
-
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    .grain::before {
-      content: "";
-      position: absolute; inset: 0;
-      pointer-events: none;
-      background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 3px 3px;
-      mix-blend-mode: overlay;
-    }
-
-    .podcast-row:hover { padding-left: 14px !important; background: rgba(var(--fg-rgb),0.03); }
-    .cta-row:hover { padding-left: 18px !important; }
-
-    /* Tweaks panel */
-    .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
-      max-height:calc(100vh - 32px);display:flex;flex-direction:column;
-      transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
-      background:rgba(250,249,247,.78);color:#29261b;
-      -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
-      border:.5px solid rgba(255,255,255,.6);border-radius:14px;
-      box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
-      font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
-    .twk-hd{display:flex;align-items:center;justify-content:space-between;
-      padding:10px 8px 10px 14px;cursor:move;user-select:none}
-    .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
-    .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
-      width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
-    .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
-    .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
-      overflow-y:auto;overflow-x:hidden;min-height:0;
-      scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
-    .twk-row{display:flex;flex-direction:column;gap:5px}
-    .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
-    .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;color:rgba(41,38,27,.72)}
-    .twk-lbl>span:first-child{font-weight:500}
-    .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-      color:rgba(41,38,27,.45);padding:10px 0 0}
-    .twk-sect:first-child{padding-top:0}
-    .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
-      background:rgba(0,0,0,.06);user-select:none}
-    .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
-      background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
-      transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
-    .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
-      background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
-      border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2}
-    .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
-      border:.5px solid rgba(0,0,0,.1);border-radius:7px;
-      background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
-    select.twk-field{padding-right:22px;
-      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
-      background-repeat:no-repeat;background-position:right 8px center}
   </style>
-
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div id="root"></div>
+  <header>
+    <div class="logo">
+      <span class="mark">A</span>
+      Alba Estrada
+    </div>
+    <div class="label">Selecciona una versión para previsualizar</div>
+  </header>
 
-  <script type="text/babel">
-    const { useEffect, useRef, useState, useCallback } = React;
+  <div class="cards">
+    <a class="card card-dark" href="oscura/">
+      <span class="card-tag">Versión 01 · Oscura</span>
+      <span class="card-title">Fondo negro,<br />texto blanco</span>
+      <div class="swatch">
+        <span class="sw" style="background:#0a0a0a;"></span>
+        <span class="sw" style="background:#f5f5f4;border-color:rgba(255,255,255,0.15)"></span>
+        <span class="sw" style="background:#f3c148;border-color:rgba(255,255,255,0.15)"></span>
+      </div>
+      <span class="card-sub">Montserrat Thin · acento amarillo · pesos finos</span>
+      <span class="card-arrow">Ver versión oscura →</span>
+    </a>
 
-    // ── useTweaks ──────────────────────────────────────────────────────────────
-    function useTweaks(defaults) {
-      const [values, setValues] = useState(defaults);
-      const setTweak = useCallback((keyOrEdits, val) => {
-        const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
-          ? keyOrEdits : { [keyOrEdits]: val };
-        setValues((prev) => ({ ...prev, ...edits }));
-      }, []);
-      return [values, setTweak];
-    }
+    <a class="card card-light" href="clara/">
+      <span class="card-tag">Versión 02 · Clara</span>
+      <span class="card-title">Fondo blanco,<br />texto negro</span>
+      <div class="swatch">
+        <span class="sw" style="background:#f5f5f4;border-color:rgba(0,0,0,0.1)"></span>
+        <span class="sw" style="background:#0a0a0a;border-color:rgba(0,0,0,0.1)"></span>
+        <span class="sw" style="background:#f3c148;border-color:rgba(0,0,0,0.1)"></span>
+      </div>
+      <span class="card-sub" style="color:rgba(10,10,10,0.5)">Montserrat Light · acento amarillo · pesos algo más bold</span>
+      <span class="card-arrow" style="color:#0a0a0a">Ver versión clara →</span>
+    </a>
+  </div>
 
-    // ── TweaksPanel ────────────────────────────────────────────────────────────
-    function TweaksPanel({ title = 'Tweaks', children }) {
-      const [open, setOpen] = useState(false);
-      const dragRef = useRef(null);
-      const offsetRef = useRef({ x: 16, y: 16 });
-      const PAD = 16;
-
-      const clampToViewport = useCallback(() => {
-        const panel = dragRef.current;
-        if (!panel) return;
-        const w = panel.offsetWidth, h = panel.offsetHeight;
-        const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
-        const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
-        offsetRef.current = {
-          x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
-          y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
-        };
-        panel.style.right = offsetRef.current.x + 'px';
-        panel.style.bottom = offsetRef.current.y + 'px';
-      }, []);
-
-      useEffect(() => {
-        if (!open) return;
-        clampToViewport();
-        const ro = typeof ResizeObserver !== 'undefined'
-          ? new ResizeObserver(clampToViewport) : null;
-        if (ro) ro.observe(document.documentElement);
-        else window.addEventListener('resize', clampToViewport);
-        return () => ro ? ro.disconnect() : window.removeEventListener('resize', clampToViewport);
-      }, [open, clampToViewport]);
-
-      const onDragStart = (e) => {
-        const panel = dragRef.current;
-        if (!panel) return;
-        const r = panel.getBoundingClientRect();
-        const sx = e.clientX;
-        const startRight = window.innerWidth - r.right;
-        const startBottom = window.innerHeight - r.bottom;
-        const move = (ev) => {
-          offsetRef.current = {
-            x: startRight - (ev.clientX - sx),
-            y: startBottom - (ev.clientY - e.clientY),
-          };
-          clampToViewport();
-        };
-        const up = () => {
-          window.removeEventListener('mousemove', move);
-          window.removeEventListener('mouseup', up);
-        };
-        window.addEventListener('mousemove', move);
-        window.addEventListener('mouseup', up);
-      };
-
-      if (!open) {
-        return (
-          <button onClick={() => setOpen(true)} style={{
-            position: 'fixed', right: 16, bottom: 16, zIndex: 2147483646,
-            padding: '8px 16px', borderRadius: 999,
-            border: '0.5px solid rgba(245,245,244,0.22)',
-            background: 'rgba(10,10,10,0.8)', backdropFilter: 'blur(12px)',
-            fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
-            cursor: 'pointer', color: 'rgba(245,245,244,0.7)',
-          }}>Tweaks</button>
-        );
-      }
-
-      return (
-        <div ref={dragRef} className="twk-panel"
-             style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
-          <div className="twk-hd" onMouseDown={onDragStart}>
-            <b>{title}</b>
-            <button className="twk-x" onClick={() => setOpen(false)}>✕</button>
-          </div>
-          <div className="twk-body">{children}</div>
-        </div>
-      );
-    }
-
-    function TweakSection({ label, children }) {
-      return <><div className="twk-sect">{label}</div>{children}</>;
-    }
-
-    function TweakRadio({ label, value, options, onChange }) {
-      const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
-      const idx = Math.max(0, opts.findIndex((o) => o.value === value));
-      const n = opts.length;
-      const trackRef = useRef(null);
-      const [dragging, setDragging] = useState(false);
-      const valueRef = useRef(value);
-      valueRef.current = value;
-
-      const maxLen = opts.reduce((m, o) => Math.max(m, String(o.label).length), 0);
-      const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[n] ?? 0);
-
-      if (!fitsAsSegments) {
-        return (
-          <div className="twk-row">
-            <div className="twk-lbl"><span>{label}</span></div>
-            <select className="twk-field" value={value} onChange={(e) => {
-              const m = opts.find((o) => String(o.value) === e.target.value);
-              onChange(m ? m.value : e.target.value);
-            }}>
-              {opts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
-          </div>
-        );
-      }
-
-      const segAt = (clientX) => {
-        const r = trackRef.current.getBoundingClientRect();
-        const inner = r.width - 4;
-        const i = Math.floor(((clientX - r.left - 2) / inner) * n);
-        return opts[Math.max(0, Math.min(n - 1, i))].value;
-      };
-
-      const onPointerDown = (e) => {
-        setDragging(true);
-        const v0 = segAt(e.clientX);
-        if (v0 !== valueRef.current) onChange(v0);
-        const move = (ev) => { if (trackRef.current) { const v = segAt(ev.clientX); if (v !== valueRef.current) onChange(v); } };
-        const up = () => { setDragging(false); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
-        window.addEventListener('pointermove', move);
-        window.addEventListener('pointerup', up);
-      };
-
-      return (
-        <div className="twk-row">
-          <div className="twk-lbl"><span>{label}</span></div>
-          <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
-               className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
-            <div className="twk-seg-thumb"
-                 style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`, width: `calc((100% - 4px) / ${n})` }} />
-            {opts.map((o) => (
-              <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>{o.label}</button>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // ── Reveal hook ───────────────────────────────────────────────────────────
-    function useReveal(dep) {
-      useEffect(() => {
-        const els = document.querySelectorAll('.reveal');
-        els.forEach((el) => el.classList.remove('in'));
-        if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-        els.forEach((el) => io.observe(el));
-        return () => io.disconnect();
-      }, [dep]);
-    }
-
-    function smoothTo(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' });
-    }
-
-    // ── Nav ───────────────────────────────────────────────────────────────────
-    function Nav() {
-      const [scrolled, setScrolled] = useState(false);
-      useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 40);
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
-      }, []);
-      const links = [['Academia', 'academia'], ['Boxes', 'boxes'], ['Mentoría', 'mentoria'], ['Sobre', 'sobre'], ['Medios', 'medios']];
-      return (
-        <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-          <div className="nav-inner">
-            <a href="#top" className="nav-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-              <span className="mark">A</span>
-              <span>Alba&nbsp;Estrada</span>
-            </a>
-            <div className="nav-links">
-              {links.map(([label, id]) => (
-                <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); smoothTo(id); }}>{label}</a>
-              ))}
-            </div>
-            <a href="#academia" className="nav-cta" onClick={(e) => { e.preventDefault(); smoothTo('academia'); }}>Academia TN</a>
-          </div>
-        </nav>
-      );
-    }
-
-    // ── Hero variants ─────────────────────────────────────────────────────────
-    function HeroSocialProof() {
-      const items = [
-        ['+500', 'Entrenadores formados'],
-        ['+40', 'Centros con metodología TN'],
-        ['3', 'Países impartiendo seminarios'],
-        ['CF Games', 'Athlete · experiencia al máximo nivel'],
-      ];
-      return (
-        <div className="container" style={{ marginTop: 'clamp(48px, 8vh, 96px)' }}>
-          <div className="reveal" style={{
-            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: 'clamp(24px, 3vw, 56px)', borderTop: '0.5px solid var(--line)', paddingTop: 32,
-          }}>
-            {items.map(([n, label], i) => (
-              <div key={i}>
-                <div style={{ fontSize: 'clamp(28px, 2.6vw, 38px)', fontWeight: 200, letterSpacing: '-0.02em', color: i === 0 ? 'var(--yellow)' : 'var(--fg)' }}>{n}</div>
-                <div className="small" style={{ color: 'var(--muted)', marginTop: 6 }}>{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    function HeroPhoto() {
-      return (
-        <section className="hero grain" id="top">
-          <div className="ph" data-label="HERO · FOTO — Alba dando formación / ponencia, ambiente real, oscuro, documental" style={{ position: 'absolute', inset: 0 }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'var(--hero-overlay)' }} />
-          </div>
-          <div style={{ position: 'relative', zIndex: 2, marginTop: 'auto', paddingBottom: 'clamp(60px, 9vh, 110px)' }}>
-            <div className="container">
-              <div className="reveal" style={{ maxWidth: 1100 }}>
-                <div className="eyebrow eyebrow-yellow" style={{ marginBottom: 28 }}>
-                  <span className="dot" />Alba Estrada · Training Norte
-                </div>
-                <h1 className="display-xl" style={{ marginBottom: 28, maxWidth: '15ch' }}>
-                  Ayudo a entrenadores y centros a <em style={{ fontStyle: 'normal', color: 'var(--yellow)', fontWeight: 200 }}>profesionalizar</em> el entrenamiento funcional.
-                </h1>
-                <p className="lede" style={{ maxWidth: '58ch', marginBottom: 44 }}>
-                  A través de formación, programación y mentoría estratégica basadas en experiencia real dentro del sector fitness.
-                </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'center' }}>
-                  <a className="btn btn-primary" href="#academia" onClick={(e) => { e.preventDefault(); smoothTo('academia'); }}>Academia TN <span className="arrow">→</span></a>
-                  <a className="btn btn-ghost" href="#boxes" onClick={(e) => { e.preventDefault(); smoothTo('boxes'); }}>Training Norte para Boxes <span className="arrow">→</span></a>
-                  <a className="btn btn-text" href="#mentoria" onClick={(e) => { e.preventDefault(); smoothTo('mentoria'); }}>Mentoría Estratégica <span className="arrow">→</span></a>
-                </div>
-              </div>
-            </div>
-            <HeroSocialProof />
-          </div>
-        </section>
-      );
-    }
-
-    function HeroVideo() {
-      return (
-        <section className="hero grain" id="top">
-          <div className="ph ph-video" data-label="HERO · VIDEO LOOP — clip silencioso, Alba en seminario, slow-mo cinemático" style={{ position: 'absolute', inset: 0 }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'var(--hero-overlay)' }} />
-            <div style={{
-              position: 'absolute', inset: 0, opacity: 0.04,
-              background: 'repeating-linear-gradient(0deg, transparent 0 2px, var(--motion-line) 2px 3px)',
-              animation: 'marquee 3s linear infinite', backgroundSize: '100% 6px',
-            }} />
-          </div>
-          <div style={{ position: 'absolute', top: 'clamp(80px, 14vh, 120px)', left: 'var(--gutter)', zIndex: 2, display: 'flex', gap: 10, alignItems: 'center' }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--yellow)', boxShadow: '0 0 0 4px rgba(243,193,72,0.18)' }} />
-            <span className="eyebrow">REEL EN BUCLE</span>
-          </div>
-          <div style={{ position: 'relative', zIndex: 2, marginTop: 'auto', paddingBottom: 'clamp(60px, 9vh, 110px)' }}>
-            <div className="container">
-              <div className="reveal" style={{ maxWidth: 1100 }}>
-                <h1 className="display-xl" style={{ marginBottom: 28, maxWidth: '15ch' }}>
-                  Profesionalizar el entrenamiento funcional desde la <em style={{ fontStyle: 'normal', color: 'var(--yellow)', fontWeight: 200 }}>experiencia real.</em>
-                </h1>
-                <p className="lede" style={{ maxWidth: '58ch', marginBottom: 44 }}>
-                  Formación, programación y mentoría para entrenadores y centros que quieren elevar el nivel.
-                </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'center' }}>
-                  <a className="btn btn-primary" href="#academia" onClick={(e) => { e.preventDefault(); smoothTo('academia'); }}>Academia TN <span className="arrow">→</span></a>
-                  <a className="btn btn-ghost" href="#boxes" onClick={(e) => { e.preventDefault(); smoothTo('boxes'); }}>Training Norte para Boxes <span className="arrow">→</span></a>
-                  <a className="btn btn-text" href="#mentoria" onClick={(e) => { e.preventDefault(); smoothTo('mentoria'); }}>Mentoría Estratégica <span className="arrow">→</span></a>
-                </div>
-              </div>
-            </div>
-            <HeroSocialProof />
-          </div>
-        </section>
-      );
-    }
-
-    function HeroTypographic() {
-      return (
-        <section className="hero" id="top" style={{ display: 'flex', flexDirection: 'column' }}>
-          <div className="container" style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: 'clamp(120px, 18vh, 200px)' }}>
-            <div className="reveal" style={{ maxWidth: 1200 }}>
-              <div className="eyebrow eyebrow-yellow" style={{ marginBottom: 32 }}>
-                <span className="dot" />Alba Estrada · Training Norte
-              </div>
-            </div>
-            <div className="reveal" style={{ marginTop: 'clamp(20px, 4vh, 40px)' }}>
-              <h1 style={{ fontWeight: 100, fontSize: 'clamp(56px, 10vw, 168px)', lineHeight: 0.96, letterSpacing: '-0.03em', marginBottom: 36, maxWidth: '14ch' }}>
-                Profesionalizar el<br />entrenamiento<br />
-                <span style={{ color: 'var(--yellow)', fontWeight: 200 }}>funcional.</span>
-              </h1>
-            </div>
-            <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)', gap: 'clamp(24px, 4vw, 80px)', alignItems: 'end', marginTop: 'clamp(20px, 5vh, 60px)' }}>
-              <div className="small mono" style={{ color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.18em', fontSize: 11 }}>↓ Scroll</div>
-              <p className="lede" style={{ maxWidth: '54ch', margin: 0 }}>
-                Ayudo a entrenadores y centros a través de formación, programación y mentoría estratégica basadas en experiencia real dentro del sector fitness.
-              </p>
-            </div>
-            <div className="reveal" style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginTop: 'clamp(40px, 6vh, 80px)' }}>
-              <a className="btn btn-primary" href="#academia" onClick={(e) => { e.preventDefault(); smoothTo('academia'); }}>Academia TN <span className="arrow">→</span></a>
-              <a className="btn btn-ghost" href="#boxes" onClick={(e) => { e.preventDefault(); smoothTo('boxes'); }}>Training Norte para Boxes <span className="arrow">→</span></a>
-              <a className="btn btn-text" href="#mentoria" onClick={(e) => { e.preventDefault(); smoothTo('mentoria'); }}>Mentoría Estratégica <span className="arrow">→</span></a>
-            </div>
-          </div>
-          <div style={{ marginTop: 'clamp(40px, 6vh, 80px)', paddingBottom: 'clamp(40px, 6vh, 60px)' }}>
-            <HeroSocialProof />
-          </div>
-        </section>
-      );
-    }
-
-    // ── Authority ─────────────────────────────────────────────────────────────
-    function Authority() {
-      return (
-        <section id="autoridad" className="dense" style={{ borderTop: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.05fr)', gap: 'clamp(40px, 6vw, 100px)', alignItems: 'start' }}>
-              <div className="reveal" style={{ position: 'sticky', top: 100 }}>
-                <div className="eyebrow" style={{ marginBottom: 28 }}><span className="dot" />02 · Experiencia real</div>
-                <h2 className="display-l" style={{ marginBottom: 32, maxWidth: '13ch' }}>Llevo años construyendo dentro del entrenamiento funcional.</h2>
-                <p className="body-l" style={{ color: 'var(--muted)', marginBottom: 20, maxWidth: '52ch' }}>
-                  He competido al máximo nivel, dirigido centros, formado a cientos de entrenadores y trabajado con boxes dentro y fuera de España.
-                </p>
-                <p className="body-l" style={{ color: 'var(--muted)', maxWidth: '52ch' }}>
-                  Todo lo que enseño nace de <span style={{ color: 'var(--fg)' }}>experiencia real, aplicación diaria</span> y una visión clara: profesionalizar el entrenamiento funcional desde la salud, el criterio y la estructura.
-                </p>
-              </div>
-              <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gridAutoRows: 80, gap: 14 }}>
-                <div className="ph" data-label="Seminario · grupo" style={{ gridColumn: '1 / span 4', gridRow: 'span 4' }} />
-                <div className="ph" data-label="Pizarra" style={{ gridColumn: '5 / span 2', gridRow: 'span 3', marginTop: 30 }} />
-                <div className="ph" data-label="Speaking" style={{ gridColumn: '5 / span 2', gridRow: 'span 3', marginTop: 14 }} />
-                <div className="ph" data-label="Coaching 1-a-1" style={{ gridColumn: '1 / span 3', gridRow: 'span 3' }} />
-                <div className="ph" data-label="Box real" style={{ gridColumn: '4 / span 3', gridRow: 'span 3', marginTop: 20 }} />
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Philosophy ────────────────────────────────────────────────────────────
-    function Philosophy() {
-      const lines = ['Necesita mejores entrenadores.', 'Mejores centros.', 'Más criterio.', 'Más estructura.'];
-      return (
-        <section id="filosofia" style={{ borderTop: '0.5px solid var(--line)', borderBottom: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div className="reveal" style={{ maxWidth: 1100, margin: '0 auto' }}>
-              <div className="eyebrow eyebrow-yellow" style={{ marginBottom: 36 }}><span className="dot" />03 · Filosofía</div>
-              <h2 className="display-l" style={{ marginBottom: 56, maxWidth: '16ch', fontWeight: 200 }}>
-                El sector no necesita <em style={{ fontStyle: 'normal', color: 'var(--yellow)' }}>más ruido</em>.
-              </h2>
-              <div style={{ borderLeft: '0.5px solid var(--line-strong)', paddingLeft: 'clamp(20px, 3vw, 40px)', maxWidth: 800 }}>
-                {lines.map((l, i) => (
-                  <p key={i} className="display-m" style={{ marginBottom: 18, color: i % 2 ? 'var(--muted)' : 'var(--fg)' }}>{l}</p>
-                ))}
-                <p className="display-m" style={{ marginBottom: 56, maxWidth: '24ch' }}>
-                  Y una forma <span style={{ color: 'var(--yellow)' }}>más profesional</span> de entender el entrenamiento funcional.
-                </p>
-              </div>
-              <p className="small mono" style={{ color: 'var(--faint)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                — Esa es la visión detrás de Alba Estrada y Training Norte.
-              </p>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Academia ──────────────────────────────────────────────────────────────
-    function Academia() {
-      return (
-        <section id="academia">
-          <div className="container">
-            <div className="reveal" style={{ marginBottom: 56, display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: 24, alignItems: 'end' }}>
-              <div>
-                <div className="eyebrow eyebrow-yellow" style={{ marginBottom: 24 }}><span className="dot" />04 · Bloque principal</div>
-                <h2 className="display-xl" style={{ fontWeight: 200, maxWidth: '11ch' }}>
-                  Academia<br /><span style={{ color: 'var(--yellow)' }}>TN.</span>
-                </h2>
-              </div>
-              <div className="mono small" style={{ color: 'var(--muted)', letterSpacing: '0.14em', textTransform: 'uppercase', textAlign: 'right', whiteSpace: 'nowrap' }}>academiatn.com ↗</div>
-            </div>
-            <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 1fr)', gap: 'clamp(32px, 5vw, 80px)', alignItems: 'stretch' }}>
-              <div className="ph" data-label="Academia · entrenadores aprendiendo, Alba corrigiendo, comunidad real" style={{ minHeight: 560 }} />
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: 12 }}>
-                <div>
-                  <h3 className="display-m" style={{ marginBottom: 24, maxWidth: '20ch' }}>Formación para entrenadores que quieren hacer las cosas bien.</h3>
-                  <p className="body-l" style={{ color: 'var(--muted)', marginBottom: 40, maxWidth: '46ch' }}>
-                    Una formación diseñada para desarrollar criterio, estructura y una metodología sólida dentro del entrenamiento funcional.
-                  </p>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column' }}>
-                    {[['01', '+500 entrenadores formados'], ['02', 'Metodología aplicada al mundo real'], ['03', 'Salud, rendimiento y programación'], ['04', 'Comunidad y acompañamiento']].map(([n, label]) => (
-                      <li key={n} style={{ display: 'grid', gridTemplateColumns: '60px 1fr', alignItems: 'center', gap: 16, padding: '18px 0', borderTop: '0.5px solid var(--line)' }}>
-                        <span className="mono small" style={{ color: 'var(--yellow)', letterSpacing: '0.12em' }}>{n}</span>
-                        <span className="body-l">{label}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <a className="btn btn-primary" href="#" style={{ alignSelf: 'flex-start' }}>Acceder a Academia TN <span className="arrow">→</span></a>
-                  <span className="small" style={{ color: 'var(--faint)' }}>Próxima edición · plazas limitadas</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Boxes ─────────────────────────────────────────────────────────────────
-    function Boxes() {
-      return (
-        <section id="boxes" style={{ borderTop: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div className="reveal" style={{ marginBottom: 56 }}>
-              <div className="eyebrow" style={{ marginBottom: 24 }}><span className="dot" />05 · Para centros</div>
-              <h2 className="display-l" style={{ maxWidth: '14ch' }}>Training Norte<br />para <span style={{ color: 'var(--yellow)' }}>boxes</span>.</h2>
-            </div>
-            <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)', gap: 'clamp(32px, 5vw, 80px)', alignItems: 'stretch' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: 12 }}>
-                <div>
-                  <h3 className="display-m" style={{ marginBottom: 24, maxWidth: '20ch' }}>Programación y metodología para centros.</h3>
-                  <p className="body-l" style={{ color: 'var(--muted)', marginBottom: 40, maxWidth: '46ch' }}>
-                    Ayudo a boxes a implementar una programación profesional, estructurada y sostenible para mejorar la experiencia de sus atletas y entrenadores.
-                  </p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 0 }}>
-                    {[['+40', 'Centros con TN'], ['100%', 'Aplicado en boxes reales'], ['1·1', 'Seguimiento y soporte'], ['L/P', 'Visión a largo plazo']].map(([n, label], i) => (
-                      <div key={i} style={{ padding: '22px 0', borderTop: '0.5px solid var(--line)', paddingRight: 12 }}>
-                        <div style={{ fontSize: 32, fontWeight: 200, letterSpacing: '-0.02em', color: i === 0 ? 'var(--yellow)' : 'var(--fg)' }}>{n}</div>
-                        <div className="small" style={{ color: 'var(--muted)', marginTop: 4 }}>{label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <a className="btn btn-ghost" href="#" style={{ alignSelf: 'flex-start' }}>Reservar llamada <span className="arrow">→</span></a>
-                  <span className="small mono" style={{ color: 'var(--faint)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>trainingnorte.com/boxes ↗</span>
-                </div>
-              </div>
-              <div className="ph" data-label="Box real · clase con coaching estructurado, energía controlada" style={{ minHeight: 600 }} />
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Mentoría ──────────────────────────────────────────────────────────────
-    function CornerTicks() {
-      const tick = (style) => (
-        <div style={{ position: 'absolute', width: 16, height: 16, borderColor: 'var(--yellow)', borderStyle: 'solid', borderWidth: 0, ...style }} />
-      );
-      return (
-        <>
-          {tick({ top: -1, left: -1, borderTopWidth: 1, borderLeftWidth: 1 })}
-          {tick({ top: -1, right: -1, borderTopWidth: 1, borderRightWidth: 1 })}
-          {tick({ bottom: -1, left: -1, borderBottomWidth: 1, borderLeftWidth: 1 })}
-          {tick({ bottom: -1, right: -1, borderBottomWidth: 1, borderRightWidth: 1 })}
-        </>
-      );
-    }
-
-    function Mentoria() {
-      return (
-        <section id="mentoria" className="dense" style={{ borderTop: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div className="reveal" style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(40px, 6vw, 88px)', border: '0.5px solid var(--line-strong)', position: 'relative' }}>
-              <CornerTicks />
-              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 'clamp(20px, 3vw, 48px)', alignItems: 'start' }}>
-                <div style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }} className="mono small">
-                  <span style={{ color: 'var(--yellow)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>06 · Por invitación</span>
-                </div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
-                    <h2 className="display-l">Mentoría Estratégica</h2>
-                    <span className="mono small" style={{ color: 'var(--yellow)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>· Máx. 2 proyectos / mes</span>
-                  </div>
-                  <p className="body-l" style={{ color: 'var(--muted)', marginBottom: 24, maxWidth: '60ch' }}>
-                    Trabajo de forma privada con un máximo de dos proyectos al mes dentro del sector fitness.
-                  </p>
-                  <p className="body-l" style={{ marginBottom: 48, maxWidth: '60ch' }}>
-                    Pensada para profesionales que ya están construyendo y buscan <span style={{ color: 'var(--yellow)' }}>estructura, posicionamiento y visión estratégica</span> para crecer bien.
-                  </p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, marginBottom: 56 }}>
-                    {['Marca personal', 'Apertura y estructura de centros', 'Posicionamiento', 'Ecosistema digital', 'Oferta y diferenciación', 'Visión a largo plazo'].map((label, i) => (
-                      <div key={i} style={{ padding: '16px 0', borderTop: '0.5px solid var(--line)', display: 'flex', alignItems: 'center', gap: 14 }}>
-                        <span style={{ width: 6, height: 6, background: 'var(--yellow)', display: 'inline-block', flexShrink: 0 }} />
-                        <span>{label}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <a className="btn btn-primary" href="#">Solicitar acceso <span className="arrow">→</span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Sobre ─────────────────────────────────────────────────────────────────
-    function Sobre() {
-      return (
-        <section id="sobre" style={{ borderTop: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 0.85fr) minmax(0, 1.15fr)', gap: 'clamp(32px, 5vw, 80px)', alignItems: 'center' }}>
-              <div className="reveal" style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 14 }}>
-                <div className="ph" data-label="Retrato editorial · B/N, mirada al lado, sin pose" style={{ aspectRatio: '4/5' }} />
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                  <div className="ph" data-label="Detalle 1" style={{ aspectRatio: '1/1' }} />
-                  <div className="ph" data-label="Detalle 2" style={{ aspectRatio: '1/1' }} />
-                </div>
-              </div>
-              <div className="reveal">
-                <div className="eyebrow" style={{ marginBottom: 24 }}><span className="dot" />07 · Sobre Alba</div>
-                <h2 className="display-l" style={{ marginBottom: 36, maxWidth: '14ch' }}>
-                  Construyo donde el sector necesita más <span style={{ color: 'var(--yellow)' }}>criterio</span>.
-                </h2>
-                <p className="body-l" style={{ color: 'var(--muted)', marginBottom: 24, maxWidth: '52ch' }}>
-                  Después de años compitiendo, formando entrenadores y construyendo proyectos dentro del fitness, hoy mi foco está en ayudar a elevar el nivel del entrenamiento funcional desde la experiencia, la salud y la profesionalización del sector.
-                </p>
-                <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 0 }}>
-                  {[['Competición', 'CrossFit Games Athlete'], ['Formación', '+500 entrenadores'], ['Centros', '+40 boxes con TN'], ['Geografía', 'España · México · Argentina']].map(([k, v], i) => (
-                    <div key={i} style={{ padding: '16px 0', borderTop: '0.5px solid var(--line)' }}>
-                      <div className="small mono" style={{ color: 'var(--faint)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>{k}</div>
-                      <div>{v}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Medios ────────────────────────────────────────────────────────────────
-    function Medios() {
-      const featured = [
-        { title: 'Experta en CrossFit: la tribu para mejorar tu físico, rendimiento y estética', host: 'Tema · Rendimiento', minutes: '1h 12m' },
-        { title: '"Me caí al suelo y mi cuerpo dejó de responder" — La lesión que cambió su vida', host: 'Tema · Lesión / Resiliencia', minutes: '58m' },
-        { title: 'Necesitamos entrenar mejor — Las claves para hacerlo', host: 'Tema · Programación', minutes: '47m' },
-        { title: 'De los Games a referente en entrenamiento — Estrategia y superación', host: 'Tema · Trayectoria', minutes: '1h 4m' },
-        { title: 'Crosstraining Expert — 10 Mistakes That Will Get You Injured', host: 'EliteLife #43 · EN', minutes: '52m' },
-        { title: 'Rendimiento deportivo y formación de entrenadores', host: 'Tema · Formación', minutes: '41m' },
-      ];
-      const channels = [['Podcast', '+25 apariciones'], ['YouTube', 'Canal propio'], ['Libro', 'Bestseller'], ['Speaking', 'Ponencias internacionales']];
-      return (
-        <section id="medios" style={{ borderTop: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: 'clamp(24px, 4vw, 80px)', alignItems: 'end', marginBottom: 64 }}>
-              <div>
-                <div className="eyebrow eyebrow-yellow" style={{ marginBottom: 24 }}><span className="dot" />08 · Conversaciones · Formación · Medios</div>
-                <h2 className="display-l" style={{ maxWidth: '14ch' }}>Quizá me has visto en…</h2>
-              </div>
-              <p className="lede" style={{ maxWidth: '52ch' }}>
-                Comparto ideas y experiencias sobre entrenamiento funcional, salud, programación y construcción de proyectos dentro del sector fitness.
-              </p>
-            </div>
-            <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, marginBottom: 80 }}>
-              {channels.map(([k, v], i) => (
-                <div key={i} style={{ padding: '28px 24px 28px 0', borderTop: '0.5px solid var(--line-strong)', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <span className="mono small" style={{ color: 'var(--yellow)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>{String(i + 1).padStart(2, '0')}</span>
-                  <div className="display-s">{k}</div>
-                  <div className="small" style={{ color: 'var(--muted)' }}>{v}</div>
-                </div>
-              ))}
-            </div>
-            <div className="reveal">
-              <div className="eyebrow" style={{ marginBottom: 32 }}><span className="dot" />Podcasts destacados</div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {featured.map((p, i) => (
-                  <li key={i} className="podcast-row" style={{
-                    display: 'grid', gridTemplateColumns: '70px minmax(0, 1fr) 200px 80px 24px',
-                    gap: 16, alignItems: 'center', padding: '24px 0',
-                    borderTop: '0.5px solid var(--line)', cursor: 'pointer',
-                    transition: 'background .2s ease, padding-left .2s ease',
-                  }}>
-                    <span className="mono small" style={{ color: 'var(--faint)' }}>{String(i + 1).padStart(2, '0')}</span>
-                    <span style={{ fontSize: 18, fontWeight: 300, lineHeight: 1.35 }}>{p.title}</span>
-                    <span className="small" style={{ color: 'var(--muted)' }}>{p.host}</span>
-                    <span className="small mono" style={{ color: 'var(--muted)' }}>{p.minutes}</span>
-                    <span style={{ color: 'var(--yellow)', fontSize: 20 }}>↗</span>
-                  </li>
-                ))}
-                <li style={{ borderTop: '0.5px solid var(--line)' }} />
-              </ul>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Final CTA ─────────────────────────────────────────────────────────────
-    function FinalCtaSplit() {
-      const Card = ({ eyebrow, title, body, btn, primary }) => (
-        <div className="reveal" style={{
-          padding: 'clamp(32px, 4vw, 56px)', border: '0.5px solid var(--line-strong)',
-          background: primary ? 'var(--yellow)' : 'transparent',
-          color: primary ? 'var(--ink)' : 'var(--fg)',
-          display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-          minHeight: 420, position: 'relative', overflow: 'hidden',
-        }}>
-          {primary && <span style={{ position: 'absolute', top: 24, right: 24, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'JetBrains Mono, monospace', opacity: 0.6 }}>★ Recomendado</span>}
-          <div>
-            <div className="eyebrow" style={{ color: primary ? 'rgba(0,0,0,0.55)' : 'var(--muted)', marginBottom: 28 }}>
-              <span className="dot" style={{ background: primary ? 'var(--ink)' : 'currentColor' }} />{eyebrow}
-            </div>
-            <h3 className="display-m" style={{ marginBottom: 24, maxWidth: '18ch' }}>{title}</h3>
-            <p className="body-l" style={{ opacity: primary ? 0.78 : 1, color: primary ? 'var(--ink)' : 'var(--muted)', maxWidth: '40ch' }}>{body}</p>
-          </div>
-          <a className="btn" style={{
-            alignSelf: 'flex-start', marginTop: 40,
-            background: primary ? 'var(--ink)' : 'transparent',
-            color: primary ? 'var(--yellow)' : 'var(--fg)',
-            border: primary ? 'none' : '0.5px solid var(--line-strong)',
-          }} href="#">{btn} <span className="arrow">→</span></a>
-        </div>
-      );
-      return (
-        <section id="cta-final" className="dense" style={{ borderTop: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div className="reveal" style={{ textAlign: 'center', marginBottom: 64 }}>
-              <div className="eyebrow eyebrow-yellow" style={{ marginBottom: 24 }}><span className="dot" />09 · Empieza por aquí</div>
-              <h2 className="display-l" style={{ maxWidth: '18ch', margin: '0 auto' }}>Elige el camino que mejor encaja contigo.</h2>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 24 }}>
-              <Card eyebrow="Entrenadores" title="Quiero formarme como entrenador" body="Accede a la formación y metodología que ya han utilizado cientos de entrenadores en España, México y Argentina." btn="Academia TN" primary={true} />
-              <Card eyebrow="Centros" title="Tengo un centro y quiero implementar TN" body="Programación profesional, estructura y soporte continuo para boxes que buscan elevar su nivel." btn="Reservar llamada" primary={false} />
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    function FinalCtaStacked() {
-      return (
-        <section id="cta-final" style={{ borderTop: '0.5px solid var(--line)' }}>
-          <div className="container">
-            <div className="reveal" style={{ maxWidth: 1100, margin: '0 auto' }}>
-              <div className="eyebrow eyebrow-yellow" style={{ marginBottom: 32 }}><span className="dot" />09 · Empieza por aquí</div>
-              <h2 style={{ fontWeight: 100, fontSize: 'clamp(48px, 8vw, 140px)', lineHeight: 0.98, letterSpacing: '-0.025em', marginBottom: 64 }}>
-                ¿Por dónde<br /><span style={{ color: 'var(--yellow)' }}>empiezas?</span>
-              </h2>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {[
-                  ['Quiero formarme como entrenador', 'Academia TN', true],
-                  ['Tengo un centro y quiero implementar TN', 'Reservar llamada', false],
-                  ['Busco mentoría estratégica privada', 'Solicitar acceso', false],
-                ].map(([title, btn, primary], i) => (
-                  <li key={i} className="cta-row" style={{
-                    display: 'grid', gridTemplateColumns: '60px 1fr auto', alignItems: 'center', gap: 24,
-                    padding: '36px 0',
-                    borderTop: i === 0 ? '0.5px solid var(--line-strong)' : '0.5px solid var(--line)',
-                    borderBottom: i === 2 ? '0.5px solid var(--line-strong)' : 'none',
-                    cursor: 'pointer', transition: 'padding-left .25s ease',
-                  }}>
-                    <span className="mono small" style={{ color: primary ? 'var(--yellow)' : 'var(--faint)', letterSpacing: '0.14em' }}>{String(i + 1).padStart(2, '0')}</span>
-                    <span className="display-s" style={{ fontWeight: 200 }}>{title}</span>
-                    <a className={primary ? 'btn btn-primary' : 'btn btn-ghost'} href="#">{btn} <span className="arrow">→</span></a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // ── Footer ────────────────────────────────────────────────────────────────
-    function Footer() {
-      return (
-        <footer style={{ borderTop: '0.5px solid var(--line-strong)', padding: '80px 0 32px' }}>
-          <div className="container">
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) repeat(3, minmax(0, 1fr))', gap: 'clamp(24px, 4vw, 80px)', marginBottom: 80 }}>
-              <div>
-                <div className="nav-logo" style={{ marginBottom: 24 }}>
-                  <span className="mark">A</span>
-                  <span>Alba Estrada</span>
-                </div>
-                <p className="small" style={{ color: 'var(--muted)', maxWidth: 320 }}>
-                  Profesionalizar el entrenamiento funcional desde la experiencia, la salud y el criterio.
-                </p>
-              </div>
-              <div>
-                <div className="eyebrow" style={{ marginBottom: 18 }}>Proyectos</div>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <li><a href="#">Academia TN ↗</a></li>
-                  <li><a href="#">Training Norte ↗</a></li>
-                  <li><a href="#">Mentoría</a></li>
-                </ul>
-              </div>
-              <div>
-                <div className="eyebrow" style={{ marginBottom: 18 }}>Conecta</div>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <li><a href="#">Instagram ↗</a></li>
-                  <li><a href="#">YouTube ↗</a></li>
-                  <li><a href="#">Newsletter</a></li>
-                </ul>
-              </div>
-              <div>
-                <div className="eyebrow" style={{ marginBottom: 18 }}>Contacto</div>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <li className="small" style={{ color: 'var(--muted)' }}>hola@albaestrada.com</li>
-                  <li><a href="#">Reservar llamada →</a></li>
-                </ul>
-              </div>
-            </div>
-            <div style={{
-              fontWeight: 100, fontSize: 'clamp(56px, 14vw, 220px)',
-              lineHeight: 0.9, letterSpacing: '-0.04em', marginBottom: 40,
-              color: 'var(--fg)', overflow: 'hidden', whiteSpace: 'nowrap',
-            }}>
-              ALBA<span style={{ color: 'var(--yellow)' }}>·</span>ESTRADA
-            </div>
-            <div style={{ paddingTop: 24, borderTop: '0.5px solid var(--line)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, color: 'var(--faint)' }} className="small mono">
-              <span style={{ letterSpacing: '0.14em', textTransform: 'uppercase' }}>© 2026 Alba Estrada · Training Norte</span>
-              <span style={{ display: 'flex', gap: 24 }}>
-                <a href="#" style={{ color: 'inherit' }}>Aviso legal</a>
-                <a href="#" style={{ color: 'inherit' }}>Privacidad</a>
-                <a href="#" style={{ color: 'inherit' }}>Cookies</a>
-              </span>
-            </div>
-          </div>
-        </footer>
-      );
-    }
-
-    // ── App ───────────────────────────────────────────────────────────────────
-    const TWEAK_DEFAULTS = { heroVariant: 'photo', finalCtaVariant: 'split' };
-
-    function App() {
-      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-      useReveal(t.heroVariant + t.finalCtaVariant);
-
-      const Hero = t.heroVariant === 'video' ? HeroVideo
-                : t.heroVariant === 'type'  ? HeroTypographic
-                : HeroPhoto;
-      const FinalCta = t.finalCtaVariant === 'stacked' ? FinalCtaStacked : FinalCtaSplit;
-
-      return (
-        <>
-          <Nav />
-          <main>
-            <Hero key={t.heroVariant} />
-            <Authority />
-            <Philosophy />
-            <Academia />
-            <Boxes />
-            <Mentoria />
-            <Sobre />
-            <Medios />
-            <FinalCta key={t.finalCtaVariant} />
-          </main>
-          <Footer />
-          <TweaksPanel title="Tweaks · Alba Estrada">
-            <TweakSection label="Hero">
-              <TweakRadio
-                label="Variante"
-                value={t.heroVariant}
-                options={[{ value: 'photo', label: 'Foto' }, { value: 'video', label: 'Video' }, { value: 'type', label: 'Tipo' }]}
-                onChange={(v) => setTweak('heroVariant', v)}
-              />
-            </TweakSection>
-            <TweakSection label="CTA final">
-              <TweakRadio
-                label="Layout"
-                value={t.finalCtaVariant}
-                options={[{ value: 'split', label: 'Dos cards' }, { value: 'stacked', label: 'Lista' }]}
-                onChange={(v) => setTweak('finalCtaVariant', v)}
-              />
-            </TweakSection>
-          </TweaksPanel>
-        </>
-      );
-    }
-
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-  </script>
+  <footer>Alba Estrada · Training Norte · Previsualización cliente</footer>
 </body>
 </html>
