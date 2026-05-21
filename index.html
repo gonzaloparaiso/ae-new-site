@@ -16,26 +16,64 @@
   <style>
     * { -webkit-font-smoothing: antialiased; }
     ::selection { background: #f3c148; color: #0B0B0B; }
+
     .fade { opacity: 0; transform: translateY(22px); transition: opacity .9s ease, transform .9s ease; }
     .fade.in { opacity: 1; transform: none; }
-    .podcast-row { transition: padding-left .2s ease, background .2s ease; }
-    .podcast-row:hover { padding-left: 1rem; background: rgba(255,255,255,.02); }
-    .podcast-row:hover .podcast-num { color: #f3c148; }
+
+    /* Nav link underline */
     .nav-link { position: relative; }
     .nav-link::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -4px; height: 1px; background: #f3c148; transition: right .25s ease; }
     .nav-link:hover::after { right: 0; }
+
+    /* Mobile menu */
+    #mobile-menu {
+      position: fixed; inset: 0; z-index: 40;
+      background: rgba(11,11,11,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    #mobile-menu.open { opacity: 1; pointer-events: auto; }
+    #mobile-menu a {
+      font-size: 1.75rem; font-weight: 300; letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.7);
+      transition: color .2s ease;
+    }
+    #mobile-menu a:hover { color: #f3c148; }
+
+    /* Podcast rows */
+    .podcast-row { transition: padding-left .2s ease, background .2s ease; }
+    .podcast-row:hover { padding-left: 0.75rem; background: rgba(255,255,255,.02); }
+    .podcast-row:hover .podcast-num { color: #f3c148; }
+
     html { scroll-behavior: smooth; }
   </style>
 </head>
-<body class="bg-[#0B0B0B] text-white font-sans">
+<body class="bg-[#0B0B0B] text-white font-sans overflow-x-hidden">
 
-  <!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+  <!-- ── MOBILE MENU ───────────────────────────────────────────────────────── -->
+  <div id="mobile-menu">
+    <a href="#academia"  onclick="closeMenu()">Academia</a>
+    <a href="#boxes"     onclick="closeMenu()">Boxes</a>
+    <a href="#mentoria"  onclick="closeMenu()">Mentoría</a>
+    <a href="#sobre"     onclick="closeMenu()">Sobre</a>
+    <a href="#medios"    onclick="closeMenu()">Medios</a>
+    <a href="#academia"  onclick="closeMenu()" class="mt-4 bg-[#f3c148] !text-black text-sm uppercase tracking-widest font-medium px-8 py-3 rounded-full">Academia TN</a>
+  </div>
+
+  <!-- ── NAV ──────────────────────────────────────────────────────────────── -->
   <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between gap-8">
+    <div class="max-w-7xl mx-auto px-5 md:px-12 py-4 md:py-5 flex items-center justify-between gap-4">
+
       <a href="#top" class="flex items-center gap-3 text-sm uppercase tracking-widest font-medium shrink-0">
         <span class="w-7 h-7 rounded-full bg-[#f3c148] text-black flex items-center justify-center text-xs font-semibold">A</span>
         Alba&nbsp;Estrada
       </a>
+
+      <!-- Desktop links -->
       <div class="hidden md:flex items-center gap-8">
         <a href="#academia" class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Academia</a>
         <a href="#boxes"    class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Boxes</a>
@@ -43,132 +81,144 @@
         <a href="#sobre"    class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Sobre</a>
         <a href="#medios"   class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Medios</a>
       </div>
-      <a href="#academia" class="shrink-0 text-xs uppercase tracking-widest bg-[#f3c148] text-black px-5 py-2.5 rounded-full hover:bg-white transition font-medium">
-        Academia TN
-      </a>
+
+      <div class="flex items-center gap-3">
+        <a href="#academia" class="hidden md:inline-flex shrink-0 text-xs uppercase tracking-widest bg-[#f3c148] text-black px-5 py-2.5 rounded-full hover:bg-white transition font-medium">
+          Academia TN
+        </a>
+        <!-- Hamburger -->
+        <button id="hamburger" class="md:hidden flex flex-col justify-center gap-[5px] w-9 h-9 rounded-lg" aria-label="Menú" onclick="toggleMenu()">
+          <span id="hb1" class="block h-px w-6 bg-white mx-auto transition-all duration-300"></span>
+          <span id="hb2" class="block h-px w-6 bg-white mx-auto transition-all duration-300"></span>
+          <span id="hb3" class="block h-px w-6 bg-white mx-auto transition-all duration-300"></span>
+        </button>
+      </div>
+
     </div>
   </nav>
 
   <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
-  <section id="top" class="relative h-screen flex items-center justify-center overflow-hidden">
+  <section id="top" class="relative min-h-screen flex items-center justify-center overflow-hidden">
     <img
       src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1974&auto=format&fit=crop"
       alt="Alba Estrada Training"
       class="absolute inset-0 w-full h-full object-cover opacity-30"
     />
     <div class="absolute inset-0 bg-black/60"></div>
-    <div class="relative z-10 max-w-6xl px-6 text-center">
-      <p class="uppercase tracking-[0.35em] text-sm text-gray-300 mb-6">
+    <div class="relative z-10 w-full max-w-6xl px-5 md:px-6 text-center pt-24 pb-16 md:py-0">
+      <p class="uppercase tracking-[0.3em] md:tracking-[0.35em] text-xs md:text-sm text-gray-300 mb-5 md:mb-6">
         Alba Estrada · Training Norte
       </p>
-      <h1 class="text-5xl md:text-7xl font-light leading-tight max-w-5xl mx-auto">
+      <h1 class="text-4xl sm:text-5xl md:text-7xl font-light leading-tight max-w-5xl mx-auto">
         Ayudo a entrenadores y centros a profesionalizar el entrenamiento funcional.
       </h1>
-      <p class="mt-8 text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+      <p class="mt-6 md:mt-8 text-base md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
         A través de formación, programación y mentoría estratégica basadas en experiencia real dentro del sector fitness.
       </p>
-      <div class="flex flex-col md:flex-row items-center justify-center gap-4 mt-12">
-        <a href="#academia" class="bg-white text-black px-8 py-4 rounded-full text-sm uppercase tracking-wider hover:bg-gray-200 transition font-medium">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 md:mt-12">
+        <a href="#academia" class="w-full sm:w-auto bg-white text-black px-8 py-4 rounded-full text-sm uppercase tracking-wider hover:bg-gray-200 transition font-medium text-center">
           Academia TN
         </a>
-        <a href="#boxes" class="border border-white/30 px-8 py-4 rounded-full text-sm uppercase tracking-wider hover:bg-white hover:text-black transition">
+        <a href="#boxes" class="w-full sm:w-auto border border-white/30 px-8 py-4 rounded-full text-sm uppercase tracking-wider hover:bg-white hover:text-black transition text-center">
           Training Norte para Boxes
         </a>
         <a href="#mentoria" class="text-sm uppercase tracking-wider text-gray-300 hover:text-white transition">
           Mentoría Estratégica
         </a>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 text-left max-w-5xl mx-auto border-t border-white/10 pt-10">
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-14 md:mt-20 text-left max-w-5xl mx-auto border-t border-white/10 pt-8 md:pt-10">
         <div>
-          <p class="text-3xl font-light text-[#f3c148]">+500</p>
-          <p class="text-gray-400 text-sm mt-2">Entrenadores formados</p>
+          <p class="text-2xl md:text-3xl font-light text-[#f3c148]">+500</p>
+          <p class="text-gray-400 text-xs md:text-sm mt-1 md:mt-2">Entrenadores formados</p>
         </div>
         <div>
-          <p class="text-3xl font-light text-[#f3c148]">+40</p>
-          <p class="text-gray-400 text-sm mt-2">Centros trabajan con TN</p>
+          <p class="text-2xl md:text-3xl font-light text-[#f3c148]">+40</p>
+          <p class="text-gray-400 text-xs md:text-sm mt-1 md:mt-2">Centros trabajan con TN</p>
         </div>
         <div>
-          <p class="text-3xl font-light text-[#f3c148]">3</p>
-          <p class="text-gray-400 text-sm mt-2">Países impartiendo seminarios</p>
+          <p class="text-2xl md:text-3xl font-light text-[#f3c148]">3</p>
+          <p class="text-gray-400 text-xs md:text-sm mt-1 md:mt-2">Países impartiendo seminarios</p>
         </div>
         <div>
-          <p class="text-3xl font-light text-[#f3c148]">CF Games</p>
-          <p class="text-gray-400 text-sm mt-2">Experiencia al máximo nivel</p>
+          <p class="text-2xl md:text-3xl font-light text-[#f3c148]">CF Games</p>
+          <p class="text-gray-400 text-xs md:text-sm mt-1 md:mt-2">Experiencia al máximo nivel</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ── AUTHORITY ─────────────────────────────────────────────────────────── -->
-  <section class="py-32 px-6 md:px-12 max-w-7xl mx-auto">
-    <div class="grid md:grid-cols-2 gap-20 items-center">
+  <section class="py-20 md:py-32 px-5 md:px-12 max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
       <div class="fade">
         <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Experiencia Real</p>
-        <h2 class="text-4xl md:text-5xl font-light leading-tight mb-8">
+        <h2 class="text-3xl md:text-5xl font-light leading-tight mb-6 md:mb-8">
           Llevo años construyendo dentro del entrenamiento funcional.
         </h2>
-        <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+        <div class="space-y-5 text-gray-300 text-base md:text-lg leading-relaxed">
           <p>He competido al máximo nivel, dirigido centros, formado a cientos de entrenadores y trabajado con boxes dentro y fuera de España.</p>
           <p>Todo lo que enseño nace de experiencia real, aplicación diaria y una visión clara: profesionalizar el entrenamiento funcional desde la salud, el criterio y la estructura.</p>
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-4 fade">
+      <div class="grid grid-cols-2 gap-3 md:gap-4 fade">
         <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop"
-             class="rounded-3xl h-80 w-full object-cover" alt=""/>
+             class="rounded-2xl md:rounded-3xl h-52 md:h-80 w-full object-cover" alt=""/>
         <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop"
-             class="rounded-3xl h-80 w-full object-cover mt-16" alt=""/>
+             class="rounded-2xl md:rounded-3xl h-52 md:h-80 w-full object-cover md:mt-16" alt=""/>
         <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop"
-             class="rounded-3xl h-80 w-full object-cover" alt=""/>
+             class="rounded-2xl md:rounded-3xl h-52 md:h-80 w-full object-cover" alt=""/>
         <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop"
-             class="rounded-3xl h-80 w-full object-cover mt-16 opacity-70" alt=""/>
+             class="rounded-2xl md:rounded-3xl h-52 md:h-80 w-full object-cover opacity-70 md:mt-16" alt=""/>
       </div>
     </div>
   </section>
 
   <!-- ── PHILOSOPHY ─────────────────────────────────────────────────────────── -->
-  <section class="py-40 border-y border-white/10">
-    <div class="max-w-5xl mx-auto px-6 text-center fade">
-      <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-8">Filosofía</p>
-      <h2 class="text-5xl md:text-6xl font-light leading-tight max-w-4xl mx-auto">
+  <section class="py-20 md:py-40 border-y border-white/10">
+    <div class="max-w-5xl mx-auto px-5 md:px-6 text-center fade">
+      <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6 md:mb-8">Filosofía</p>
+      <h2 class="text-4xl md:text-6xl font-light leading-tight max-w-4xl mx-auto">
         El sector no necesita más ruido.
       </h2>
-      <div class="mt-12 space-y-4 text-2xl md:text-3xl text-gray-300 font-light">
+      <div class="mt-8 md:mt-12 space-y-3 md:space-y-4 text-xl md:text-3xl text-gray-300 font-light">
         <p>Necesita mejores entrenadores.</p>
         <p>Mejores centros.</p>
         <p>Más criterio.</p>
         <p>Más estructura.</p>
         <p>Y una forma más profesional de entender el entrenamiento funcional.</p>
       </div>
-      <p class="mt-14 text-xs text-gray-600 uppercase tracking-[0.2em]">
+      <p class="mt-10 md:mt-14 text-xs text-gray-600 uppercase tracking-[0.2em]">
         — Esa es la visión detrás de Alba Estrada y Training Norte.
       </p>
     </div>
   </section>
 
   <!-- ── SERVICIOS ──────────────────────────────────────────────────────────── -->
-  <section class="py-32 px-6 md:px-12 max-w-7xl mx-auto space-y-32">
+  <section class="py-20 md:py-32 px-5 md:px-12 max-w-7xl mx-auto space-y-20 md:space-y-32">
 
     <!-- Academia -->
-    <div id="academia" class="grid md:grid-cols-2 gap-16 items-center">
+    <div id="academia" class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
       <div class="fade">
         <img src="https://images.unsplash.com/photo-1518611012118-f8474d2be8e0?q=80&w=1200&auto=format&fit=crop"
-             class="rounded-[2rem] w-full h-[650px] object-cover" alt="Academia TN"/>
+             class="rounded-[1.5rem] md:rounded-[2rem] w-full h-[280px] sm:h-[380px] md:h-[650px] object-cover" alt="Academia TN"/>
       </div>
       <div class="fade">
         <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Academia TN</p>
-        <h3 class="text-5xl font-light leading-tight mb-8">
+        <h3 class="text-3xl md:text-5xl font-light leading-tight mb-6 md:mb-8">
           Formación para entrenadores que quieren hacer las cosas bien.
         </h3>
-        <div class="space-y-5 text-lg text-gray-300 leading-relaxed">
+        <div class="space-y-4 md:space-y-5 text-base md:text-lg text-gray-300 leading-relaxed">
           <p>Una formación diseñada para desarrollar criterio, estructura y una metodología sólida dentro del entrenamiento funcional.</p>
-          <ul class="space-y-3 pt-4">
+          <ul class="space-y-2 md:space-y-3 pt-3 md:pt-4">
             <li>+500 entrenadores formados</li>
             <li>Metodología aplicada al mundo real</li>
             <li>Salud, rendimiento y programación</li>
             <li>Comunidad y acompañamiento</li>
           </ul>
         </div>
-        <div class="mt-10 flex flex-col gap-3">
+        <div class="mt-8 md:mt-10 flex flex-col gap-3">
           <a href="#" class="self-start bg-white text-black px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-gray-200 transition font-medium">
             Acceder a Academia TN
           </a>
@@ -178,62 +228,62 @@
     </div>
 
     <!-- Boxes -->
-    <div id="boxes" class="grid md:grid-cols-2 gap-16 items-center">
-      <div class="order-2 md:order-1 fade">
+    <div id="boxes" class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+      <div class="md:order-1 order-2 fade">
         <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Training Norte</p>
-        <h3 class="text-5xl font-light leading-tight mb-8">
+        <h3 class="text-3xl md:text-5xl font-light leading-tight mb-6 md:mb-8">
           Programación y metodología para centros.
         </h3>
-        <div class="space-y-5 text-lg text-gray-300 leading-relaxed">
+        <div class="space-y-4 md:space-y-5 text-base md:text-lg text-gray-300 leading-relaxed">
           <p>Ayudo a boxes a implementar una programación profesional, estructurada y sostenible para mejorar la experiencia de sus atletas y entrenadores.</p>
-          <ul class="space-y-3 pt-4">
+          <ul class="space-y-2 md:space-y-3 pt-3 md:pt-4">
             <li>+40 centros utilizan TN</li>
             <li>Programación aplicada en boxes reales</li>
             <li>Seguimiento y soporte continuo</li>
             <li>Visión a largo plazo</li>
           </ul>
         </div>
-        <div class="mt-10 flex flex-col gap-3">
+        <div class="mt-8 md:mt-10 flex flex-col gap-3">
           <a href="#" class="self-start border border-white/30 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
             Reservar llamada
           </a>
           <p class="text-xs text-gray-600 uppercase tracking-[0.14em]">trainingnorte.com/boxes ↗</p>
         </div>
       </div>
-      <div class="order-1 md:order-2 fade">
+      <div class="md:order-2 order-1 fade">
         <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1200&auto=format&fit=crop"
-             class="rounded-[2rem] w-full h-[650px] object-cover" alt="Training Norte Boxes"/>
+             class="rounded-[1.5rem] md:rounded-[2rem] w-full h-[280px] sm:h-[380px] md:h-[650px] object-cover" alt="Training Norte Boxes"/>
       </div>
     </div>
 
     <!-- Mentoría -->
-    <div id="mentoria" class="border border-white/10 rounded-[2rem] p-10 md:p-16 bg-white/[0.03] fade">
+    <div id="mentoria" class="border border-white/10 rounded-[1.5rem] md:rounded-[2rem] p-8 md:p-16 bg-white/[0.03] fade">
       <div class="max-w-4xl">
         <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">
           Mentoría Estratégica · Por invitación · Máx. 2 proyectos / mes
         </p>
-        <h3 class="text-4xl md:text-5xl font-light leading-tight mb-8">
+        <h3 class="text-3xl md:text-5xl font-light leading-tight mb-6 md:mb-8">
           Trabajo de forma privada con un máximo de 2 proyectos al mes.
         </h3>
-        <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mb-4">
+        <p class="text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl mb-4">
           Trabajo de forma privada con un máximo de dos proyectos al mes dentro del sector fitness.
         </p>
-        <p class="text-lg text-gray-300 leading-relaxed max-w-3xl">
+        <p class="text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl">
           Pensada para profesionales que ya están construyendo y buscan estructura, posicionamiento y visión estratégica para crecer bien.
         </p>
-        <div class="grid md:grid-cols-2 gap-6 mt-12 text-gray-300">
-          <div class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-6 mt-8 md:mt-12 text-gray-300 text-sm md:text-base">
+          <div class="space-y-2 md:space-y-3">
             <p>Marca personal</p>
             <p>Posicionamiento</p>
             <p>Oferta y diferenciación</p>
           </div>
-          <div class="space-y-3">
+          <div class="space-y-2 md:space-y-3">
             <p>Apertura y estructura de centros</p>
             <p>Ecosistema digital</p>
             <p>Visión a largo plazo</p>
           </div>
         </div>
-        <a href="#" class="mt-12 inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
+        <a href="#" class="mt-10 md:mt-12 inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
           Solicitar acceso
         </a>
       </div>
@@ -241,41 +291,41 @@
   </section>
 
   <!-- ── SOBRE ──────────────────────────────────────────────────────────────── -->
-  <section id="sobre" class="py-32 px-6 md:px-12 max-w-7xl mx-auto border-t border-white/10">
-    <div class="grid md:grid-cols-2 gap-20 items-center">
-      <div class="grid grid-cols-2 gap-4 fade">
+  <section id="sobre" class="py-20 md:py-32 px-5 md:px-12 max-w-7xl mx-auto border-t border-white/10">
+    <div class="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+      <div class="grid grid-cols-2 gap-3 md:gap-4 fade">
         <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=800&auto=format&fit=crop"
-             class="rounded-3xl col-span-2 h-96 w-full object-cover object-top" alt="Alba Estrada"/>
+             class="rounded-2xl md:rounded-3xl col-span-2 h-64 md:h-96 w-full object-cover object-top" alt="Alba Estrada"/>
         <img src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80&w=800&auto=format&fit=crop"
-             class="rounded-3xl h-52 w-full object-cover" alt=""/>
+             class="rounded-2xl md:rounded-3xl h-40 md:h-52 w-full object-cover" alt=""/>
         <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop"
-             class="rounded-3xl h-52 w-full object-cover" alt=""/>
+             class="rounded-2xl md:rounded-3xl h-40 md:h-52 w-full object-cover" alt=""/>
       </div>
       <div class="fade">
         <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Sobre Alba</p>
-        <h2 class="text-4xl md:text-5xl font-light leading-tight mb-8">
+        <h2 class="text-3xl md:text-5xl font-light leading-tight mb-6 md:mb-8">
           Construyo donde el sector necesita más criterio.
         </h2>
-        <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+        <div class="space-y-5 text-gray-300 text-base md:text-lg leading-relaxed">
           <p>Después de años compitiendo, formando entrenadores y construyendo proyectos dentro del fitness, hoy mi foco está en ayudar a elevar el nivel del entrenamiento funcional desde la experiencia, la salud y la profesionalización del sector.</p>
         </div>
-        <div class="mt-12 border-t border-white/10">
+        <div class="mt-10 md:mt-12 border-t border-white/10">
           <div class="grid grid-cols-2">
-            <div class="py-5 pr-8 border-b border-white/10">
+            <div class="py-4 md:py-5 pr-6 md:pr-8 border-b border-white/10">
               <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Competición</p>
-              <p class="text-gray-200">CrossFit Games Athlete</p>
+              <p class="text-gray-200 text-sm md:text-base">CrossFit Games Athlete</p>
             </div>
-            <div class="py-5 pl-8 border-b border-l border-white/10">
+            <div class="py-4 md:py-5 pl-6 md:pl-8 border-b border-l border-white/10">
               <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Formación</p>
-              <p class="text-gray-200">+500 entrenadores</p>
+              <p class="text-gray-200 text-sm md:text-base">+500 entrenadores</p>
             </div>
-            <div class="py-5 pr-8">
+            <div class="py-4 md:py-5 pr-6 md:pr-8">
               <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Centros</p>
-              <p class="text-gray-200">+40 boxes con TN</p>
+              <p class="text-gray-200 text-sm md:text-base">+40 boxes con TN</p>
             </div>
-            <div class="py-5 pl-8 border-l border-white/10">
+            <div class="py-4 md:py-5 pl-6 md:pl-8 border-l border-white/10">
               <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Geografía</p>
-              <p class="text-gray-200">España · México · Argentina</p>
+              <p class="text-gray-200 text-sm md:text-base">España · México · Argentina</p>
             </div>
           </div>
         </div>
@@ -284,93 +334,108 @@
   </section>
 
   <!-- ── MEDIOS ─────────────────────────────────────────────────────────────── -->
-  <section id="medios" class="py-32 border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="text-center max-w-3xl mx-auto mb-20 fade">
+  <section id="medios" class="py-20 md:py-32 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-5 md:px-12">
+      <div class="text-center max-w-3xl mx-auto mb-14 md:mb-20 fade">
         <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">
           <span class="text-[#f3c148]">·</span> Conversaciones · Formación · Medios <span class="text-[#f3c148]">·</span>
         </p>
-        <h2 class="text-5xl font-light mb-8">Quizá me has visto en...</h2>
-        <p class="text-lg text-gray-300 leading-relaxed">
+        <h2 class="text-4xl md:text-5xl font-light mb-6 md:mb-8">Quizá me has visto en...</h2>
+        <p class="text-base md:text-lg text-gray-300 leading-relaxed">
           Comparto ideas y experiencias sobre entrenamiento funcional, salud, programación y construcción de proyectos dentro del sector fitness.
         </p>
       </div>
 
-      <div class="grid md:grid-cols-4 gap-6 mb-20 fade">
-        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+      <!-- Cards grid: 2 cols on mobile, 4 on desktop -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-14 md:mb-20 fade">
+        <div class="border border-white/10 rounded-2xl md:rounded-[2rem] p-6 md:p-10 h-48 md:h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
           <div>
-            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">01</p>
-            <h3 class="text-2xl font-light">Podcast</h3>
-            <p class="text-gray-500 text-sm mt-1">+25 apariciones</p>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-2 md:mb-3">01</p>
+            <h3 class="text-lg md:text-2xl font-light">Podcast</h3>
+            <p class="text-gray-500 text-xs md:text-sm mt-1">+25 apariciones</p>
           </div>
         </div>
-        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+        <div class="border border-white/10 rounded-2xl md:rounded-[2rem] p-6 md:p-10 h-48 md:h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
           <div>
-            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">02</p>
-            <h3 class="text-2xl font-light">YouTube</h3>
-            <p class="text-gray-500 text-sm mt-1">Canal propio</p>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-2 md:mb-3">02</p>
+            <h3 class="text-lg md:text-2xl font-light">YouTube</h3>
+            <p class="text-gray-500 text-xs md:text-sm mt-1">Canal propio</p>
           </div>
         </div>
-        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+        <div class="border border-white/10 rounded-2xl md:rounded-[2rem] p-6 md:p-10 h-48 md:h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
           <div>
-            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">03</p>
-            <h3 class="text-2xl font-light">Libro</h3>
-            <p class="text-gray-500 text-sm mt-1">Bestseller</p>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-2 md:mb-3">03</p>
+            <h3 class="text-lg md:text-2xl font-light">Libro</h3>
+            <p class="text-gray-500 text-xs md:text-sm mt-1">Bestseller</p>
           </div>
         </div>
-        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+        <div class="border border-white/10 rounded-2xl md:rounded-[2rem] p-6 md:p-10 h-48 md:h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
           <div>
-            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">04</p>
-            <h3 class="text-2xl font-light">Speaking</h3>
-            <p class="text-gray-500 text-sm mt-1">Ponencias internacionales</p>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-2 md:mb-3">04</p>
+            <h3 class="text-lg md:text-2xl font-light">Speaking</h3>
+            <p class="text-gray-500 text-xs md:text-sm mt-1">Ponencias internacionales</p>
           </div>
         </div>
       </div>
 
+      <!-- Podcast list -->
       <div class="fade">
-        <p class="uppercase tracking-[0.2em] text-xs text-gray-500 mb-8">Podcasts destacados</p>
+        <p class="uppercase tracking-[0.2em] text-xs text-gray-500 mb-6 md:mb-8">Podcasts destacados</p>
         <ul>
-          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="podcast-num text-xs text-gray-600 font-mono">01</span>
-            <span class="text-gray-200 text-[17px] leading-snug">Experta en CrossFit: la tribu para mejorar tu físico, rendimiento y estética</span>
-            <span class="text-sm text-gray-500">Tema · Rendimiento</span>
-            <span class="text-sm text-gray-500 font-mono">1h 12m</span>
-            <span class="text-gray-500">↗</span>
+          <!-- Mobile: num + title + arrow. Desktop: + topic + duration -->
+          <li class="podcast-row py-5 md:py-6 border-t border-white/10 cursor-pointer">
+            <div class="grid grid-cols-[36px_1fr_20px] md:grid-cols-[56px_1fr_180px_72px_20px] gap-3 md:gap-4 items-center">
+              <span class="podcast-num text-xs text-gray-600 font-mono">01</span>
+              <span class="text-gray-200 text-sm md:text-[17px] leading-snug">Experta en CrossFit: la tribu para mejorar tu físico, rendimiento y estética</span>
+              <span class="hidden md:block text-sm text-gray-500">Tema · Rendimiento</span>
+              <span class="hidden md:block text-sm text-gray-500 font-mono">1h 12m</span>
+              <span class="text-gray-500 text-xs">↗</span>
+            </div>
           </li>
-          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="podcast-num text-xs text-gray-600 font-mono">02</span>
-            <span class="text-gray-200 text-[17px] leading-snug">"Me caí al suelo y mi cuerpo dejó de responder" — La lesión que cambió su vida</span>
-            <span class="text-sm text-gray-500">Tema · Lesión / Resiliencia</span>
-            <span class="text-sm text-gray-500 font-mono">58m</span>
-            <span class="text-gray-500">↗</span>
+          <li class="podcast-row py-5 md:py-6 border-t border-white/10 cursor-pointer">
+            <div class="grid grid-cols-[36px_1fr_20px] md:grid-cols-[56px_1fr_180px_72px_20px] gap-3 md:gap-4 items-center">
+              <span class="podcast-num text-xs text-gray-600 font-mono">02</span>
+              <span class="text-gray-200 text-sm md:text-[17px] leading-snug">"Me caí al suelo y mi cuerpo dejó de responder" — La lesión que cambió su vida</span>
+              <span class="hidden md:block text-sm text-gray-500">Tema · Lesión / Resiliencia</span>
+              <span class="hidden md:block text-sm text-gray-500 font-mono">58m</span>
+              <span class="text-gray-500 text-xs">↗</span>
+            </div>
           </li>
-          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="podcast-num text-xs text-gray-600 font-mono">03</span>
-            <span class="text-gray-200 text-[17px] leading-snug">Necesitamos entrenar mejor — Las claves para hacerlo</span>
-            <span class="text-sm text-gray-500">Tema · Programación</span>
-            <span class="text-sm text-gray-500 font-mono">47m</span>
-            <span class="text-gray-500">↗</span>
+          <li class="podcast-row py-5 md:py-6 border-t border-white/10 cursor-pointer">
+            <div class="grid grid-cols-[36px_1fr_20px] md:grid-cols-[56px_1fr_180px_72px_20px] gap-3 md:gap-4 items-center">
+              <span class="podcast-num text-xs text-gray-600 font-mono">03</span>
+              <span class="text-gray-200 text-sm md:text-[17px] leading-snug">Necesitamos entrenar mejor — Las claves para hacerlo</span>
+              <span class="hidden md:block text-sm text-gray-500">Tema · Programación</span>
+              <span class="hidden md:block text-sm text-gray-500 font-mono">47m</span>
+              <span class="text-gray-500 text-xs">↗</span>
+            </div>
           </li>
-          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="podcast-num text-xs text-gray-600 font-mono">04</span>
-            <span class="text-gray-200 text-[17px] leading-snug">De los Games a referente en entrenamiento — Estrategia y superación</span>
-            <span class="text-sm text-gray-500">Tema · Trayectoria</span>
-            <span class="text-sm text-gray-500 font-mono">1h 4m</span>
-            <span class="text-gray-500">↗</span>
+          <li class="podcast-row py-5 md:py-6 border-t border-white/10 cursor-pointer">
+            <div class="grid grid-cols-[36px_1fr_20px] md:grid-cols-[56px_1fr_180px_72px_20px] gap-3 md:gap-4 items-center">
+              <span class="podcast-num text-xs text-gray-600 font-mono">04</span>
+              <span class="text-gray-200 text-sm md:text-[17px] leading-snug">De los Games a referente en entrenamiento — Estrategia y superación</span>
+              <span class="hidden md:block text-sm text-gray-500">Tema · Trayectoria</span>
+              <span class="hidden md:block text-sm text-gray-500 font-mono">1h 4m</span>
+              <span class="text-gray-500 text-xs">↗</span>
+            </div>
           </li>
-          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="podcast-num text-xs text-gray-600 font-mono">05</span>
-            <span class="text-gray-200 text-[17px] leading-snug">Crosstraining Expert — 10 Mistakes That Will Get You Injured</span>
-            <span class="text-sm text-gray-500">EliteLife #43 · EN</span>
-            <span class="text-sm text-gray-500 font-mono">52m</span>
-            <span class="text-gray-500">↗</span>
+          <li class="podcast-row py-5 md:py-6 border-t border-white/10 cursor-pointer">
+            <div class="grid grid-cols-[36px_1fr_20px] md:grid-cols-[56px_1fr_180px_72px_20px] gap-3 md:gap-4 items-center">
+              <span class="podcast-num text-xs text-gray-600 font-mono">05</span>
+              <span class="text-gray-200 text-sm md:text-[17px] leading-snug">Crosstraining Expert — 10 Mistakes That Will Get You Injured</span>
+              <span class="hidden md:block text-sm text-gray-500">EliteLife #43 · EN</span>
+              <span class="hidden md:block text-sm text-gray-500 font-mono">52m</span>
+              <span class="text-gray-500 text-xs">↗</span>
+            </div>
           </li>
-          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-b border-white/10 cursor-pointer">
-            <span class="podcast-num text-xs text-gray-600 font-mono">06</span>
-            <span class="text-gray-200 text-[17px] leading-snug">Rendimiento deportivo y formación de entrenadores</span>
-            <span class="text-sm text-gray-500">Tema · Formación</span>
-            <span class="text-sm text-gray-500 font-mono">41m</span>
-            <span class="text-gray-500">↗</span>
+          <li class="podcast-row py-5 md:py-6 border-t border-b border-white/10 cursor-pointer">
+            <div class="grid grid-cols-[36px_1fr_20px] md:grid-cols-[56px_1fr_180px_72px_20px] gap-3 md:gap-4 items-center">
+              <span class="podcast-num text-xs text-gray-600 font-mono">06</span>
+              <span class="text-gray-200 text-sm md:text-[17px] leading-snug">Rendimiento deportivo y formación de entrenadores</span>
+              <span class="hidden md:block text-sm text-gray-500">Tema · Formación</span>
+              <span class="hidden md:block text-sm text-gray-500 font-mono">41m</span>
+              <span class="text-gray-500 text-xs">↗</span>
+            </div>
           </li>
         </ul>
       </div>
@@ -378,24 +443,24 @@
   </section>
 
   <!-- ── FINAL CTA ──────────────────────────────────────────────────────────── -->
-  <section class="py-40 px-6 text-center">
+  <section class="py-20 md:py-40 px-5 md:px-6 text-center">
     <div class="max-w-5xl mx-auto fade">
-      <h2 class="text-5xl md:text-6xl font-light leading-tight mb-16">
+      <h2 class="text-4xl md:text-6xl font-light leading-tight mb-10 md:mb-16">
         Elige el camino que mejor encaja contigo.
       </h2>
-      <div class="grid md:grid-cols-2 gap-8 text-left">
-        <div class="border border-white/10 rounded-[2rem] p-12 bg-white/[0.03]">
-          <h3 class="text-3xl font-light mb-6">Quiero formarme como entrenador</h3>
-          <p class="text-gray-300 leading-relaxed mb-10">
+      <div class="grid md:grid-cols-2 gap-5 md:gap-8 text-left">
+        <div class="border border-white/10 rounded-[1.5rem] md:rounded-[2rem] p-8 md:p-12 bg-white/[0.03]">
+          <h3 class="text-2xl md:text-3xl font-light mb-4 md:mb-6">Quiero formarme como entrenador</h3>
+          <p class="text-gray-300 leading-relaxed mb-8 md:mb-10 text-sm md:text-base">
             Accede a la formación y metodología que ya han utilizado cientos de entrenadores en España, México y Argentina.
           </p>
           <a href="#" class="inline-block bg-white text-black px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-gray-200 transition font-medium">
             Academia TN
           </a>
         </div>
-        <div class="border border-white/10 rounded-[2rem] p-12 bg-white/[0.03]">
-          <h3 class="text-3xl font-light mb-6">Tengo un centro y quiero implementar TN</h3>
-          <p class="text-gray-300 leading-relaxed mb-10">
+        <div class="border border-white/10 rounded-[1.5rem] md:rounded-[2rem] p-8 md:p-12 bg-white/[0.03]">
+          <h3 class="text-2xl md:text-3xl font-light mb-4 md:mb-6">Tengo un centro y quiero implementar TN</h3>
+          <p class="text-gray-300 leading-relaxed mb-8 md:mb-10 text-sm md:text-base">
             Programación profesional, estructura y soporte continuo para boxes que buscan elevar su nivel.
           </p>
           <a href="#" class="inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
@@ -407,11 +472,11 @@
   </section>
 
   <!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
-  <footer class="border-t border-white/10 pt-16 pb-8 px-6 md:px-12">
+  <footer class="border-t border-white/10 pt-12 md:pt-16 pb-8 px-5 md:px-12">
     <div class="max-w-7xl mx-auto">
-      <div class="grid md:grid-cols-4 gap-12 mb-20">
-        <div>
-          <div class="flex items-center gap-3 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 mb-12 md:mb-16">
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-3 mb-5 md:mb-6">
             <span class="w-7 h-7 rounded-full bg-[#f3c148] text-black flex items-center justify-center text-xs font-semibold">A</span>
             <span class="text-sm uppercase tracking-widest font-medium">Alba Estrada</span>
           </div>
@@ -420,33 +485,33 @@
           </p>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Proyectos</p>
-          <ul class="space-y-3 text-sm text-gray-400">
+          <p class="text-xs uppercase tracking-widest text-gray-600 mb-4 md:mb-5">Proyectos</p>
+          <ul class="space-y-2 md:space-y-3 text-sm text-gray-400">
             <li><a href="#" class="hover:text-[#f3c148] transition">Academia TN ↗</a></li>
             <li><a href="#" class="hover:text-[#f3c148] transition">Training Norte ↗</a></li>
             <li><a href="#" class="hover:text-[#f3c148] transition">Mentoría</a></li>
           </ul>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Conecta</p>
-          <ul class="space-y-3 text-sm text-gray-400">
+          <p class="text-xs uppercase tracking-widest text-gray-600 mb-4 md:mb-5">Conecta</p>
+          <ul class="space-y-2 md:space-y-3 text-sm text-gray-400">
             <li><a href="#" class="hover:text-[#f3c148] transition">Instagram ↗</a></li>
             <li><a href="#" class="hover:text-[#f3c148] transition">YouTube ↗</a></li>
             <li><a href="#" class="hover:text-[#f3c148] transition">Newsletter</a></li>
           </ul>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Contacto</p>
-          <ul class="space-y-3 text-sm text-gray-400">
+          <p class="text-xs uppercase tracking-widest text-gray-600 mb-4 md:mb-5">Contacto</p>
+          <ul class="space-y-2 md:space-y-3 text-sm text-gray-400">
             <li>hola@albaestrada.com</li>
             <li><a href="#" class="hover:text-[#f3c148] transition">Reservar llamada →</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-600 uppercase tracking-widest">
+      <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600 uppercase tracking-widest">
         <span>© 2026 Alba Estrada · Training Norte</span>
-        <div class="flex gap-6">
+        <div class="flex gap-5 md:gap-6">
           <a href="#" class="hover:text-gray-400 transition">Aviso legal</a>
           <a href="#" class="hover:text-gray-400 transition">Privacidad</a>
           <a href="#" class="hover:text-gray-400 transition">Cookies</a>
@@ -456,20 +521,50 @@
   </footer>
 
   <script>
-    // Nav glass on scroll
+    // ── NAV glass on scroll ──────────────────────────────────────────────────
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 40) {
-        nav.style.cssText = 'background:rgba(11,11,11,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.07)';
+        nav.style.cssText = 'background:rgba(11,11,11,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.07)';
       } else {
         nav.style.cssText = '';
       }
     }, { passive: true });
 
-    // Scroll reveal
+    // ── Mobile menu ─────────────────────────────────────────────────────────
+    const menu = document.getElementById('mobile-menu');
+    const hb1  = document.getElementById('hb1');
+    const hb2  = document.getElementById('hb2');
+    const hb3  = document.getElementById('hb3');
+    let open   = false;
+
+    function toggleMenu() {
+      open = !open;
+      menu.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+      // Animate to X
+      if (open) {
+        hb1.style.cssText = 'transform: translateY(6px) rotate(45deg)';
+        hb2.style.cssText = 'opacity: 0';
+        hb3.style.cssText = 'transform: translateY(-6px) rotate(-45deg)';
+      } else {
+        hb1.style.cssText = hb2.style.cssText = hb3.style.cssText = '';
+      }
+    }
+
+    function closeMenu() {
+      if (open) toggleMenu();
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+    // ── Scroll reveal ────────────────────────────────────────────────────────
     const io = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
-      { threshold: 0.1, rootMargin: '0px 0px -6% 0px' }
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      }),
+      { threshold: 0.08, rootMargin: '0px 0px -5% 0px' }
     );
     document.querySelectorAll('.fade').forEach(el => io.observe(el));
   </script>
