@@ -15,11 +15,15 @@
   </script>
   <style>
     * { -webkit-font-smoothing: antialiased; }
-    ::selection { background: rgba(255,255,255,0.15); }
+    ::selection { background: #f3c148; color: #0B0B0B; }
     .fade { opacity: 0; transform: translateY(22px); transition: opacity .9s ease, transform .9s ease; }
     .fade.in { opacity: 1; transform: none; }
     .podcast-row { transition: padding-left .2s ease, background .2s ease; }
     .podcast-row:hover { padding-left: 1rem; background: rgba(255,255,255,.02); }
+    .podcast-row:hover .podcast-num { color: #f3c148; }
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -4px; height: 1px; background: #f3c148; transition: right .25s ease; }
+    .nav-link:hover::after { right: 0; }
     html { scroll-behavior: smooth; }
   </style>
 </head>
@@ -29,17 +33,17 @@
   <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between gap-8">
       <a href="#top" class="flex items-center gap-3 text-sm uppercase tracking-widest font-medium shrink-0">
-        <span class="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center text-xs font-semibold">A</span>
+        <span class="w-7 h-7 rounded-full bg-[#f3c148] text-black flex items-center justify-center text-xs font-semibold">A</span>
         Alba&nbsp;Estrada
       </a>
       <div class="hidden md:flex items-center gap-8">
-        <a href="#academia" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Academia</a>
-        <a href="#boxes"    class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Boxes</a>
-        <a href="#mentoria" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Mentoría</a>
-        <a href="#sobre"    class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Sobre</a>
-        <a href="#medios"   class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Medios</a>
+        <a href="#academia" class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Academia</a>
+        <a href="#boxes"    class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Boxes</a>
+        <a href="#mentoria" class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Mentoría</a>
+        <a href="#sobre"    class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Sobre</a>
+        <a href="#medios"   class="nav-link text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Medios</a>
       </div>
-      <a href="#academia" class="shrink-0 text-xs uppercase tracking-widest bg-white text-black px-5 py-2.5 rounded-full hover:bg-gray-200 transition font-medium">
+      <a href="#academia" class="shrink-0 text-xs uppercase tracking-widest bg-[#f3c148] text-black px-5 py-2.5 rounded-full hover:bg-white transition font-medium">
         Academia TN
       </a>
     </div>
@@ -76,19 +80,19 @@
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 text-left max-w-5xl mx-auto border-t border-white/10 pt-10">
         <div>
-          <p class="text-3xl font-light">+500</p>
+          <p class="text-3xl font-light text-[#f3c148]">+500</p>
           <p class="text-gray-400 text-sm mt-2">Entrenadores formados</p>
         </div>
         <div>
-          <p class="text-3xl font-light">+40</p>
+          <p class="text-3xl font-light text-[#f3c148]">+40</p>
           <p class="text-gray-400 text-sm mt-2">Centros trabajan con TN</p>
         </div>
         <div>
-          <p class="text-3xl font-light">3</p>
+          <p class="text-3xl font-light text-[#f3c148]">3</p>
           <p class="text-gray-400 text-sm mt-2">Países impartiendo seminarios</p>
         </div>
         <div>
-          <p class="text-3xl font-light">CF Games</p>
+          <p class="text-3xl font-light text-[#f3c148]">CF Games</p>
           <p class="text-gray-400 text-sm mt-2">Experiencia al máximo nivel</p>
         </div>
       </div>
@@ -99,7 +103,7 @@
   <section class="py-32 px-6 md:px-12 max-w-7xl mx-auto">
     <div class="grid md:grid-cols-2 gap-20 items-center">
       <div class="fade">
-        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Experiencia Real</p>
+        <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Experiencia Real</p>
         <h2 class="text-4xl md:text-5xl font-light leading-tight mb-8">
           Llevo años construyendo dentro del entrenamiento funcional.
         </h2>
@@ -124,7 +128,7 @@
   <!-- ── PHILOSOPHY ─────────────────────────────────────────────────────────── -->
   <section class="py-40 border-y border-white/10">
     <div class="max-w-5xl mx-auto px-6 text-center fade">
-      <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-8">Filosofía</p>
+      <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-8">Filosofía</p>
       <h2 class="text-5xl md:text-6xl font-light leading-tight max-w-4xl mx-auto">
         El sector no necesita más ruido.
       </h2>
@@ -151,7 +155,7 @@
              class="rounded-[2rem] w-full h-[650px] object-cover" alt="Academia TN"/>
       </div>
       <div class="fade">
-        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Academia TN</p>
+        <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Academia TN</p>
         <h3 class="text-5xl font-light leading-tight mb-8">
           Formación para entrenadores que quieren hacer las cosas bien.
         </h3>
@@ -176,7 +180,7 @@
     <!-- Boxes -->
     <div id="boxes" class="grid md:grid-cols-2 gap-16 items-center">
       <div class="order-2 md:order-1 fade">
-        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Training Norte</p>
+        <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Training Norte</p>
         <h3 class="text-5xl font-light leading-tight mb-8">
           Programación y metodología para centros.
         </h3>
@@ -205,7 +209,7 @@
     <!-- Mentoría -->
     <div id="mentoria" class="border border-white/10 rounded-[2rem] p-10 md:p-16 bg-white/[0.03] fade">
       <div class="max-w-4xl">
-        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">
+        <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">
           Mentoría Estratégica · Por invitación · Máx. 2 proyectos / mes
         </p>
         <h3 class="text-4xl md:text-5xl font-light leading-tight mb-8">
@@ -248,7 +252,7 @@
              class="rounded-3xl h-52 w-full object-cover" alt=""/>
       </div>
       <div class="fade">
-        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Sobre Alba</p>
+        <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">Sobre Alba</p>
         <h2 class="text-4xl md:text-5xl font-light leading-tight mb-8">
           Construyo donde el sector necesita más criterio.
         </h2>
@@ -283,8 +287,8 @@
   <section id="medios" class="py-32 border-t border-white/10">
     <div class="max-w-7xl mx-auto px-6 md:px-12">
       <div class="text-center max-w-3xl mx-auto mb-20 fade">
-        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">
-          Conversaciones · Formación · Medios
+        <p class="uppercase tracking-[0.25em] text-sm text-[#f3c148] mb-6">
+          <span class="text-[#f3c148]">·</span> Conversaciones · Formación · Medios <span class="text-[#f3c148]">·</span>
         </p>
         <h2 class="text-5xl font-light mb-8">Quizá me has visto en...</h2>
         <p class="text-lg text-gray-300 leading-relaxed">
@@ -327,42 +331,42 @@
         <p class="uppercase tracking-[0.2em] text-xs text-gray-500 mb-8">Podcasts destacados</p>
         <ul>
           <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="text-xs text-gray-600 font-mono">01</span>
+            <span class="podcast-num text-xs text-gray-600 font-mono">01</span>
             <span class="text-gray-200 text-[17px] leading-snug">Experta en CrossFit: la tribu para mejorar tu físico, rendimiento y estética</span>
             <span class="text-sm text-gray-500">Tema · Rendimiento</span>
             <span class="text-sm text-gray-500 font-mono">1h 12m</span>
             <span class="text-gray-500">↗</span>
           </li>
           <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="text-xs text-gray-600 font-mono">02</span>
+            <span class="podcast-num text-xs text-gray-600 font-mono">02</span>
             <span class="text-gray-200 text-[17px] leading-snug">"Me caí al suelo y mi cuerpo dejó de responder" — La lesión que cambió su vida</span>
             <span class="text-sm text-gray-500">Tema · Lesión / Resiliencia</span>
             <span class="text-sm text-gray-500 font-mono">58m</span>
             <span class="text-gray-500">↗</span>
           </li>
           <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="text-xs text-gray-600 font-mono">03</span>
+            <span class="podcast-num text-xs text-gray-600 font-mono">03</span>
             <span class="text-gray-200 text-[17px] leading-snug">Necesitamos entrenar mejor — Las claves para hacerlo</span>
             <span class="text-sm text-gray-500">Tema · Programación</span>
             <span class="text-sm text-gray-500 font-mono">47m</span>
             <span class="text-gray-500">↗</span>
           </li>
           <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="text-xs text-gray-600 font-mono">04</span>
+            <span class="podcast-num text-xs text-gray-600 font-mono">04</span>
             <span class="text-gray-200 text-[17px] leading-snug">De los Games a referente en entrenamiento — Estrategia y superación</span>
             <span class="text-sm text-gray-500">Tema · Trayectoria</span>
             <span class="text-sm text-gray-500 font-mono">1h 4m</span>
             <span class="text-gray-500">↗</span>
           </li>
           <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
-            <span class="text-xs text-gray-600 font-mono">05</span>
+            <span class="podcast-num text-xs text-gray-600 font-mono">05</span>
             <span class="text-gray-200 text-[17px] leading-snug">Crosstraining Expert — 10 Mistakes That Will Get You Injured</span>
             <span class="text-sm text-gray-500">EliteLife #43 · EN</span>
             <span class="text-sm text-gray-500 font-mono">52m</span>
             <span class="text-gray-500">↗</span>
           </li>
           <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-b border-white/10 cursor-pointer">
-            <span class="text-xs text-gray-600 font-mono">06</span>
+            <span class="podcast-num text-xs text-gray-600 font-mono">06</span>
             <span class="text-gray-200 text-[17px] leading-snug">Rendimiento deportivo y formación de entrenadores</span>
             <span class="text-sm text-gray-500">Tema · Formación</span>
             <span class="text-sm text-gray-500 font-mono">41m</span>
@@ -408,7 +412,7 @@
       <div class="grid md:grid-cols-4 gap-12 mb-20">
         <div>
           <div class="flex items-center gap-3 mb-6">
-            <span class="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center text-xs font-semibold">A</span>
+            <span class="w-7 h-7 rounded-full bg-[#f3c148] text-black flex items-center justify-center text-xs font-semibold">A</span>
             <span class="text-sm uppercase tracking-widest font-medium">Alba Estrada</span>
           </div>
           <p class="text-sm text-gray-500 leading-relaxed max-w-xs">
@@ -418,30 +422,30 @@
         <div>
           <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Proyectos</p>
           <ul class="space-y-3 text-sm text-gray-400">
-            <li><a href="#" class="hover:text-white transition">Academia TN ↗</a></li>
-            <li><a href="#" class="hover:text-white transition">Training Norte ↗</a></li>
-            <li><a href="#" class="hover:text-white transition">Mentoría</a></li>
+            <li><a href="#" class="hover:text-[#f3c148] transition">Academia TN ↗</a></li>
+            <li><a href="#" class="hover:text-[#f3c148] transition">Training Norte ↗</a></li>
+            <li><a href="#" class="hover:text-[#f3c148] transition">Mentoría</a></li>
           </ul>
         </div>
         <div>
           <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Conecta</p>
           <ul class="space-y-3 text-sm text-gray-400">
-            <li><a href="#" class="hover:text-white transition">Instagram ↗</a></li>
-            <li><a href="#" class="hover:text-white transition">YouTube ↗</a></li>
-            <li><a href="#" class="hover:text-white transition">Newsletter</a></li>
+            <li><a href="#" class="hover:text-[#f3c148] transition">Instagram ↗</a></li>
+            <li><a href="#" class="hover:text-[#f3c148] transition">YouTube ↗</a></li>
+            <li><a href="#" class="hover:text-[#f3c148] transition">Newsletter</a></li>
           </ul>
         </div>
         <div>
           <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Contacto</p>
           <ul class="space-y-3 text-sm text-gray-400">
             <li>hola@albaestrada.com</li>
-            <li><a href="#" class="hover:text-white transition">Reservar llamada →</a></li>
+            <li><a href="#" class="hover:text-[#f3c148] transition">Reservar llamada →</a></li>
           </ul>
         </div>
       </div>
 
       <div class="text-[clamp(56px,14vw,200px)] font-light leading-none tracking-[-0.04em] overflow-hidden whitespace-nowrap mb-10 select-none text-white">
-        ALBA<span class="text-white/15">·</span>ESTRADA
+        ALBA<span class="text-[#f3c148]/50">·</span>ESTRADA
       </div>
 
       <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-600 uppercase tracking-widest">
