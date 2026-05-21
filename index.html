@@ -3,137 +3,475 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Alba Estrada · Previsualización</title>
+  <title>Alba Estrada — Training Norte</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap"/>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] } } }
+    }
+  </script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      min-height: 100vh;
-      background: #0a0a0a;
-      color: #f5f5f4;
-      font-family: 'Montserrat', system-ui, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 56px;
-      padding: clamp(32px, 6vw, 80px);
-    }
-    header { text-align: center; display: flex; flex-direction: column; gap: 16px; }
-    .logo {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: 13px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
-    }
-    .mark {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: #f3c148;
-      display: inline-flex; align-items: center; justify-content: center;
-      color: #0a0a0a; font-weight: 600; font-size: 12px;
-    }
-    .label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(245,245,244,0.4);
-      margin-top: 4px;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      width: 100%;
-      max-width: 680px;
-    }
-    .card {
-      display: flex; flex-direction: column; gap: 24px;
-      padding: clamp(28px, 4vw, 40px);
-      border: 0.5px solid rgba(245,245,244,0.15);
-      text-decoration: none;
-      transition: border-color .2s ease, transform .2s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, #f3c148, transparent);
-      opacity: 0;
-      transition: opacity .2s ease;
-    }
-    .card:hover { border-color: rgba(243,193,72,0.4); transform: translateY(-2px); }
-    .card:hover::before { opacity: 1; }
-
-    .card-dark  { background: #111110; color: #f5f5f4; }
-    .card-light { background: #f5f5f4; color: #0a0a0a; border-color: rgba(10,10,10,0.1); }
-    .card-light:hover { border-color: rgba(243,193,72,0.5); }
-    .card-light .card-tag { color: rgba(10,10,10,0.4); }
-    .card-light .card-sub { color: rgba(10,10,10,0.55); }
-
-    .card-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(245,245,244,0.4);
-    }
-    .card-title { font-size: clamp(22px, 3vw, 28px); font-weight: 200; letter-spacing: -0.015em; line-height: 1.1; }
-    .card-sub { font-size: 13px; font-weight: 300; color: rgba(245,245,244,0.5); line-height: 1.5; }
-    .card-arrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
-      color: #f3c148; margin-top: auto;
-      transition: gap .2s ease;
-    }
-    .card:hover .card-arrow { gap: 14px; }
-
-    .swatch { display: flex; gap: 6px; margin-top: 4px; }
-    .sw { width: 14px; height: 14px; border-radius: 50%; border: 0.5px solid rgba(255,255,255,0.1); }
-
-    footer {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(245,245,244,0.2);
-      text-align: center;
-    }
+    * { -webkit-font-smoothing: antialiased; }
+    ::selection { background: rgba(255,255,255,0.15); }
+    .fade { opacity: 0; transform: translateY(22px); transition: opacity .9s ease, transform .9s ease; }
+    .fade.in { opacity: 1; transform: none; }
+    .podcast-row { transition: padding-left .2s ease, background .2s ease; }
+    .podcast-row:hover { padding-left: 1rem; background: rgba(255,255,255,.02); }
+    html { scroll-behavior: smooth; }
   </style>
 </head>
-<body>
-  <header>
-    <div class="logo">
-      <span class="mark">A</span>
-      Alba Estrada
+<body class="bg-[#0B0B0B] text-white font-sans">
+
+  <!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+  <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between gap-8">
+      <a href="#top" class="flex items-center gap-3 text-sm uppercase tracking-widest font-medium shrink-0">
+        <span class="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center text-xs font-semibold">A</span>
+        Alba&nbsp;Estrada
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#academia" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Academia</a>
+        <a href="#boxes"    class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Boxes</a>
+        <a href="#mentoria" class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Mentoría</a>
+        <a href="#sobre"    class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Sobre</a>
+        <a href="#medios"   class="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition">Medios</a>
+      </div>
+      <a href="#academia" class="shrink-0 text-xs uppercase tracking-widest bg-white text-black px-5 py-2.5 rounded-full hover:bg-gray-200 transition font-medium">
+        Academia TN
+      </a>
     </div>
-    <div class="label">Selecciona una versión para previsualizar</div>
-  </header>
+  </nav>
 
-  <div class="cards">
-    <a class="card card-dark" href="oscura/">
-      <span class="card-tag">Versión 01 · Oscura</span>
-      <span class="card-title">Fondo negro,<br />texto blanco</span>
-      <div class="swatch">
-        <span class="sw" style="background:#0a0a0a;"></span>
-        <span class="sw" style="background:#f5f5f4;border-color:rgba(255,255,255,0.15)"></span>
-        <span class="sw" style="background:#f3c148;border-color:rgba(255,255,255,0.15)"></span>
+  <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+  <section id="top" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <img
+      src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1974&auto=format&fit=crop"
+      alt="Alba Estrada Training"
+      class="absolute inset-0 w-full h-full object-cover opacity-30"
+    />
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative z-10 max-w-6xl px-6 text-center">
+      <p class="uppercase tracking-[0.35em] text-sm text-gray-300 mb-6">
+        Alba Estrada · Training Norte
+      </p>
+      <h1 class="text-5xl md:text-7xl font-light leading-tight max-w-5xl mx-auto">
+        Ayudo a entrenadores y centros a profesionalizar el entrenamiento funcional.
+      </h1>
+      <p class="mt-8 text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        A través de formación, programación y mentoría estratégica basadas en experiencia real dentro del sector fitness.
+      </p>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4 mt-12">
+        <a href="#academia" class="bg-white text-black px-8 py-4 rounded-full text-sm uppercase tracking-wider hover:bg-gray-200 transition font-medium">
+          Academia TN
+        </a>
+        <a href="#boxes" class="border border-white/30 px-8 py-4 rounded-full text-sm uppercase tracking-wider hover:bg-white hover:text-black transition">
+          Training Norte para Boxes
+        </a>
+        <a href="#mentoria" class="text-sm uppercase tracking-wider text-gray-300 hover:text-white transition">
+          Mentoría Estratégica
+        </a>
       </div>
-      <span class="card-sub">Montserrat Thin · acento amarillo · pesos finos</span>
-      <span class="card-arrow">Ver versión oscura →</span>
-    </a>
-
-    <a class="card card-light" href="clara/">
-      <span class="card-tag">Versión 02 · Clara</span>
-      <span class="card-title">Fondo blanco,<br />texto negro</span>
-      <div class="swatch">
-        <span class="sw" style="background:#f5f5f4;border-color:rgba(0,0,0,0.1)"></span>
-        <span class="sw" style="background:#0a0a0a;border-color:rgba(0,0,0,0.1)"></span>
-        <span class="sw" style="background:#f3c148;border-color:rgba(0,0,0,0.1)"></span>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 text-left max-w-5xl mx-auto border-t border-white/10 pt-10">
+        <div>
+          <p class="text-3xl font-light">+500</p>
+          <p class="text-gray-400 text-sm mt-2">Entrenadores formados</p>
+        </div>
+        <div>
+          <p class="text-3xl font-light">+40</p>
+          <p class="text-gray-400 text-sm mt-2">Centros trabajan con TN</p>
+        </div>
+        <div>
+          <p class="text-3xl font-light">3</p>
+          <p class="text-gray-400 text-sm mt-2">Países impartiendo seminarios</p>
+        </div>
+        <div>
+          <p class="text-3xl font-light">CF Games</p>
+          <p class="text-gray-400 text-sm mt-2">Experiencia al máximo nivel</p>
+        </div>
       </div>
-      <span class="card-sub" style="color:rgba(10,10,10,0.5)">Montserrat Light · acento amarillo · pesos algo más bold</span>
-      <span class="card-arrow" style="color:#0a0a0a">Ver versión clara →</span>
-    </a>
-  </div>
+    </div>
+  </section>
 
-  <footer>Alba Estrada · Training Norte · Previsualización cliente</footer>
+  <!-- ── AUTHORITY ─────────────────────────────────────────────────────────── -->
+  <section class="py-32 px-6 md:px-12 max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-20 items-center">
+      <div class="fade">
+        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Experiencia Real</p>
+        <h2 class="text-4xl md:text-5xl font-light leading-tight mb-8">
+          Llevo años construyendo dentro del entrenamiento funcional.
+        </h2>
+        <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+          <p>He competido al máximo nivel, dirigido centros, formado a cientos de entrenadores y trabajado con boxes dentro y fuera de España.</p>
+          <p>Todo lo que enseño nace de experiencia real, aplicación diaria y una visión clara: profesionalizar el entrenamiento funcional desde la salud, el criterio y la estructura.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4 fade">
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop"
+             class="rounded-3xl h-80 w-full object-cover" alt=""/>
+        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop"
+             class="rounded-3xl h-80 w-full object-cover mt-16" alt=""/>
+        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop"
+             class="rounded-3xl h-80 w-full object-cover" alt=""/>
+        <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop"
+             class="rounded-3xl h-80 w-full object-cover mt-16 opacity-70" alt=""/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHILOSOPHY ─────────────────────────────────────────────────────────── -->
+  <section class="py-40 border-y border-white/10">
+    <div class="max-w-5xl mx-auto px-6 text-center fade">
+      <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-8">Filosofía</p>
+      <h2 class="text-5xl md:text-6xl font-light leading-tight max-w-4xl mx-auto">
+        El sector no necesita más ruido.
+      </h2>
+      <div class="mt-12 space-y-4 text-2xl md:text-3xl text-gray-300 font-light">
+        <p>Necesita mejores entrenadores.</p>
+        <p>Mejores centros.</p>
+        <p>Más criterio.</p>
+        <p>Más estructura.</p>
+        <p>Y una forma más profesional de entender el entrenamiento funcional.</p>
+      </div>
+      <p class="mt-14 text-xs text-gray-600 uppercase tracking-[0.2em]">
+        — Esa es la visión detrás de Alba Estrada y Training Norte.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── SERVICIOS ──────────────────────────────────────────────────────────── -->
+  <section class="py-32 px-6 md:px-12 max-w-7xl mx-auto space-y-32">
+
+    <!-- Academia -->
+    <div id="academia" class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="fade">
+        <img src="https://images.unsplash.com/photo-1518611012118-f8474d2be8e0?q=80&w=1200&auto=format&fit=crop"
+             class="rounded-[2rem] w-full h-[650px] object-cover" alt="Academia TN"/>
+      </div>
+      <div class="fade">
+        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Academia TN</p>
+        <h3 class="text-5xl font-light leading-tight mb-8">
+          Formación para entrenadores que quieren hacer las cosas bien.
+        </h3>
+        <div class="space-y-5 text-lg text-gray-300 leading-relaxed">
+          <p>Una formación diseñada para desarrollar criterio, estructura y una metodología sólida dentro del entrenamiento funcional.</p>
+          <ul class="space-y-3 pt-4">
+            <li>+500 entrenadores formados</li>
+            <li>Metodología aplicada al mundo real</li>
+            <li>Salud, rendimiento y programación</li>
+            <li>Comunidad y acompañamiento</li>
+          </ul>
+        </div>
+        <div class="mt-10 flex flex-col gap-3">
+          <a href="#" class="self-start bg-white text-black px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-gray-200 transition font-medium">
+            Acceder a Academia TN
+          </a>
+          <p class="text-sm text-gray-600">Próxima edición · plazas limitadas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boxes -->
+    <div id="boxes" class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="order-2 md:order-1 fade">
+        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Training Norte</p>
+        <h3 class="text-5xl font-light leading-tight mb-8">
+          Programación y metodología para centros.
+        </h3>
+        <div class="space-y-5 text-lg text-gray-300 leading-relaxed">
+          <p>Ayudo a boxes a implementar una programación profesional, estructurada y sostenible para mejorar la experiencia de sus atletas y entrenadores.</p>
+          <ul class="space-y-3 pt-4">
+            <li>+40 centros utilizan TN</li>
+            <li>Programación aplicada en boxes reales</li>
+            <li>Seguimiento y soporte continuo</li>
+            <li>Visión a largo plazo</li>
+          </ul>
+        </div>
+        <div class="mt-10 flex flex-col gap-3">
+          <a href="#" class="self-start border border-white/30 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
+            Reservar llamada
+          </a>
+          <p class="text-xs text-gray-600 uppercase tracking-[0.14em]">trainingnorte.com/boxes ↗</p>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 fade">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1200&auto=format&fit=crop"
+             class="rounded-[2rem] w-full h-[650px] object-cover" alt="Training Norte Boxes"/>
+      </div>
+    </div>
+
+    <!-- Mentoría -->
+    <div id="mentoria" class="border border-white/10 rounded-[2rem] p-10 md:p-16 bg-white/[0.03] fade">
+      <div class="max-w-4xl">
+        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">
+          Mentoría Estratégica · Por invitación · Máx. 2 proyectos / mes
+        </p>
+        <h3 class="text-4xl md:text-5xl font-light leading-tight mb-8">
+          Trabajo de forma privada con un máximo de 2 proyectos al mes.
+        </h3>
+        <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mb-4">
+          Trabajo de forma privada con un máximo de dos proyectos al mes dentro del sector fitness.
+        </p>
+        <p class="text-lg text-gray-300 leading-relaxed max-w-3xl">
+          Pensada para profesionales que ya están construyendo y buscan estructura, posicionamiento y visión estratégica para crecer bien.
+        </p>
+        <div class="grid md:grid-cols-2 gap-6 mt-12 text-gray-300">
+          <div class="space-y-3">
+            <p>Marca personal</p>
+            <p>Posicionamiento</p>
+            <p>Oferta y diferenciación</p>
+          </div>
+          <div class="space-y-3">
+            <p>Apertura y estructura de centros</p>
+            <p>Ecosistema digital</p>
+            <p>Visión a largo plazo</p>
+          </div>
+        </div>
+        <a href="#" class="mt-12 inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
+          Solicitar acceso
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOBRE ──────────────────────────────────────────────────────────────── -->
+  <section id="sobre" class="py-32 px-6 md:px-12 max-w-7xl mx-auto border-t border-white/10">
+    <div class="grid md:grid-cols-2 gap-20 items-center">
+      <div class="grid grid-cols-2 gap-4 fade">
+        <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=800&auto=format&fit=crop"
+             class="rounded-3xl col-span-2 h-96 w-full object-cover object-top" alt="Alba Estrada"/>
+        <img src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80&w=800&auto=format&fit=crop"
+             class="rounded-3xl h-52 w-full object-cover" alt=""/>
+        <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop"
+             class="rounded-3xl h-52 w-full object-cover" alt=""/>
+      </div>
+      <div class="fade">
+        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">Sobre Alba</p>
+        <h2 class="text-4xl md:text-5xl font-light leading-tight mb-8">
+          Construyo donde el sector necesita más criterio.
+        </h2>
+        <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+          <p>Después de años compitiendo, formando entrenadores y construyendo proyectos dentro del fitness, hoy mi foco está en ayudar a elevar el nivel del entrenamiento funcional desde la experiencia, la salud y la profesionalización del sector.</p>
+        </div>
+        <div class="mt-12 border-t border-white/10">
+          <div class="grid grid-cols-2">
+            <div class="py-5 pr-8 border-b border-white/10">
+              <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Competición</p>
+              <p class="text-gray-200">CrossFit Games Athlete</p>
+            </div>
+            <div class="py-5 pl-8 border-b border-l border-white/10">
+              <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Formación</p>
+              <p class="text-gray-200">+500 entrenadores</p>
+            </div>
+            <div class="py-5 pr-8">
+              <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Centros</p>
+              <p class="text-gray-200">+40 boxes con TN</p>
+            </div>
+            <div class="py-5 pl-8 border-l border-white/10">
+              <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-1">Geografía</p>
+              <p class="text-gray-200">España · México · Argentina</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MEDIOS ─────────────────────────────────────────────────────────────── -->
+  <section id="medios" class="py-32 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="text-center max-w-3xl mx-auto mb-20 fade">
+        <p class="uppercase tracking-[0.25em] text-sm text-gray-500 mb-6">
+          Conversaciones · Formación · Medios
+        </p>
+        <h2 class="text-5xl font-light mb-8">Quizá me has visto en...</h2>
+        <p class="text-lg text-gray-300 leading-relaxed">
+          Comparto ideas y experiencias sobre entrenamiento funcional, salud, programación y construcción de proyectos dentro del sector fitness.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-6 mb-20 fade">
+        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+          <div>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">01</p>
+            <h3 class="text-2xl font-light">Podcast</h3>
+            <p class="text-gray-500 text-sm mt-1">+25 apariciones</p>
+          </div>
+        </div>
+        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+          <div>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">02</p>
+            <h3 class="text-2xl font-light">YouTube</h3>
+            <p class="text-gray-500 text-sm mt-1">Canal propio</p>
+          </div>
+        </div>
+        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+          <div>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">03</p>
+            <h3 class="text-2xl font-light">Libro</h3>
+            <p class="text-gray-500 text-sm mt-1">Bestseller</p>
+          </div>
+        </div>
+        <div class="border border-white/10 rounded-[2rem] p-10 h-64 flex items-end bg-white/[0.02] hover:bg-white/[0.04] transition">
+          <div>
+            <p class="text-xs text-gray-600 uppercase tracking-[0.14em] mb-3">04</p>
+            <h3 class="text-2xl font-light">Speaking</h3>
+            <p class="text-gray-500 text-sm mt-1">Ponencias internacionales</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade">
+        <p class="uppercase tracking-[0.2em] text-xs text-gray-500 mb-8">Podcasts destacados</p>
+        <ul>
+          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
+            <span class="text-xs text-gray-600 font-mono">01</span>
+            <span class="text-gray-200 text-[17px] leading-snug">Experta en CrossFit: la tribu para mejorar tu físico, rendimiento y estética</span>
+            <span class="text-sm text-gray-500">Tema · Rendimiento</span>
+            <span class="text-sm text-gray-500 font-mono">1h 12m</span>
+            <span class="text-gray-500">↗</span>
+          </li>
+          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
+            <span class="text-xs text-gray-600 font-mono">02</span>
+            <span class="text-gray-200 text-[17px] leading-snug">"Me caí al suelo y mi cuerpo dejó de responder" — La lesión que cambió su vida</span>
+            <span class="text-sm text-gray-500">Tema · Lesión / Resiliencia</span>
+            <span class="text-sm text-gray-500 font-mono">58m</span>
+            <span class="text-gray-500">↗</span>
+          </li>
+          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
+            <span class="text-xs text-gray-600 font-mono">03</span>
+            <span class="text-gray-200 text-[17px] leading-snug">Necesitamos entrenar mejor — Las claves para hacerlo</span>
+            <span class="text-sm text-gray-500">Tema · Programación</span>
+            <span class="text-sm text-gray-500 font-mono">47m</span>
+            <span class="text-gray-500">↗</span>
+          </li>
+          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
+            <span class="text-xs text-gray-600 font-mono">04</span>
+            <span class="text-gray-200 text-[17px] leading-snug">De los Games a referente en entrenamiento — Estrategia y superación</span>
+            <span class="text-sm text-gray-500">Tema · Trayectoria</span>
+            <span class="text-sm text-gray-500 font-mono">1h 4m</span>
+            <span class="text-gray-500">↗</span>
+          </li>
+          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-white/10 cursor-pointer">
+            <span class="text-xs text-gray-600 font-mono">05</span>
+            <span class="text-gray-200 text-[17px] leading-snug">Crosstraining Expert — 10 Mistakes That Will Get You Injured</span>
+            <span class="text-sm text-gray-500">EliteLife #43 · EN</span>
+            <span class="text-sm text-gray-500 font-mono">52m</span>
+            <span class="text-gray-500">↗</span>
+          </li>
+          <li class="podcast-row grid grid-cols-[56px_1fr_180px_72px_20px] gap-4 items-center py-6 border-t border-b border-white/10 cursor-pointer">
+            <span class="text-xs text-gray-600 font-mono">06</span>
+            <span class="text-gray-200 text-[17px] leading-snug">Rendimiento deportivo y formación de entrenadores</span>
+            <span class="text-sm text-gray-500">Tema · Formación</span>
+            <span class="text-sm text-gray-500 font-mono">41m</span>
+            <span class="text-gray-500">↗</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ──────────────────────────────────────────────────────────── -->
+  <section class="py-40 px-6 text-center">
+    <div class="max-w-5xl mx-auto fade">
+      <h2 class="text-5xl md:text-6xl font-light leading-tight mb-16">
+        Elige el camino que mejor encaja contigo.
+      </h2>
+      <div class="grid md:grid-cols-2 gap-8 text-left">
+        <div class="border border-white/10 rounded-[2rem] p-12 bg-white/[0.03]">
+          <h3 class="text-3xl font-light mb-6">Quiero formarme como entrenador</h3>
+          <p class="text-gray-300 leading-relaxed mb-10">
+            Accede a la formación y metodología que ya han utilizado cientos de entrenadores en España, México y Argentina.
+          </p>
+          <a href="#" class="inline-block bg-white text-black px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-gray-200 transition font-medium">
+            Academia TN
+          </a>
+        </div>
+        <div class="border border-white/10 rounded-[2rem] p-12 bg-white/[0.03]">
+          <h3 class="text-3xl font-light mb-6">Tengo un centro y quiero implementar TN</h3>
+          <p class="text-gray-300 leading-relaxed mb-10">
+            Programación profesional, estructura y soporte continuo para boxes que buscan elevar su nivel.
+          </p>
+          <a href="#" class="inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
+            Reservar llamada
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+  <footer class="border-t border-white/10 pt-16 pb-8 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-12 mb-20">
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <span class="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center text-xs font-semibold">A</span>
+            <span class="text-sm uppercase tracking-widest font-medium">Alba Estrada</span>
+          </div>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-xs">
+            Profesionalizar el entrenamiento funcional desde la experiencia, la salud y el criterio.
+          </p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Proyectos</p>
+          <ul class="space-y-3 text-sm text-gray-400">
+            <li><a href="#" class="hover:text-white transition">Academia TN ↗</a></li>
+            <li><a href="#" class="hover:text-white transition">Training Norte ↗</a></li>
+            <li><a href="#" class="hover:text-white transition">Mentoría</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Conecta</p>
+          <ul class="space-y-3 text-sm text-gray-400">
+            <li><a href="#" class="hover:text-white transition">Instagram ↗</a></li>
+            <li><a href="#" class="hover:text-white transition">YouTube ↗</a></li>
+            <li><a href="#" class="hover:text-white transition">Newsletter</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-widest text-gray-600 mb-5">Contacto</p>
+          <ul class="space-y-3 text-sm text-gray-400">
+            <li>hola@albaestrada.com</li>
+            <li><a href="#" class="hover:text-white transition">Reservar llamada →</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-[clamp(56px,14vw,200px)] font-light leading-none tracking-[-0.04em] overflow-hidden whitespace-nowrap mb-10 select-none text-white">
+        ALBA<span class="text-white/15">·</span>ESTRADA
+      </div>
+
+      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-600 uppercase tracking-widest">
+        <span>© 2026 Alba Estrada · Training Norte</span>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-gray-400 transition">Aviso legal</a>
+          <a href="#" class="hover:text-gray-400 transition">Privacidad</a>
+          <a href="#" class="hover:text-gray-400 transition">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav glass on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        nav.style.cssText = 'background:rgba(11,11,11,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.07)';
+      } else {
+        nav.style.cssText = '';
+      }
+    }, { passive: true });
+
+    // Scroll reveal
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+      { threshold: 0.1, rootMargin: '0px 0px -6% 0px' }
+    );
+    document.querySelectorAll('.fade').forEach(el => io.observe(el));
+  </script>
 </body>
 </html>
