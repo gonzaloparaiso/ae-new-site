@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap"/>
-  <link rel="preload" as="image" href="img-hero3.jpg"/>
+  <link rel="preload" as="image" href="img-hero4.jpg"/>
   <script>
     tailwind.config = {
       theme: { extend: { fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] } } }
@@ -87,9 +87,9 @@
   <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
   <section id="top" class="relative min-h-screen flex items-center justify-center overflow-hidden">
     <img
-      src="img-hero3.jpg"
+      src="img-hero4.jpg"
       alt="Alba Estrada Training"
-      class="absolute inset-0 w-full h-full object-cover object-left md:object-center opacity-30"
+      class="absolute inset-0 w-full h-full object-cover object-right md:object-center opacity-30"
       fetchpriority="high"
     />
     <div class="absolute inset-0 bg-black/35"></div>
@@ -520,7 +520,7 @@
           <p class="text-xs uppercase tracking-widest text-gray-600 mb-4 md:mb-5">Contacto</p>
           <ul class="space-y-2 md:space-y-3 text-sm text-gray-400">
             <li><a href="mailto:alba@trainingnorte.com" class="hover:text-[#f3c148] transition">alba@trainingnorte.com</a></li>
-            <li><a href="#" class="hover:text-[#f3c148] transition">Reservar llamada →</a></li>
+            <li><button onclick="openModal()" class="hover:text-[#f3c148] transition cursor-pointer text-left">Agendar llamada →</button></li>
           </ul>
         </div>
       </div>
