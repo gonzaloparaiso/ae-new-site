@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap"/>
+  <link rel="preload" as="image" href="img-hero3.jpg"/>
   <script>
     tailwind.config = {
       theme: { extend: { fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] } } }
@@ -88,7 +89,9 @@
     <img
       src="img-hero3.jpg"
       alt="Alba Estrada Training"
-      class="absolute inset-0 w-full h-full object-cover opacity-30"
+      class="absolute inset-0 w-full h-full object-cover object-left md:object-center opacity-30"
+      fetchpriority="high"
+      decoding="async"
     />
     <div class="absolute inset-0 bg-black/35"></div>
     <div class="relative z-10 w-full max-w-6xl px-5 md:px-6 text-center pt-24 pb-16 md:py-0">
