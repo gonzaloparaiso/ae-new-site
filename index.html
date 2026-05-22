@@ -21,6 +21,24 @@
     .fade.in { opacity: 1; transform: none; }
 
 
+    /* Modal */
+    #mentoria-modal { transition: opacity .3s ease; }
+    #mentoria-modal.open { opacity: 1 !important; pointer-events: auto !important; }
+    #mentoria-modal .modal-card { transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+    #mentoria-modal.open .modal-card { transform: translateY(0) !important; }
+
+    /* Form inputs */
+    .form-field {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 0.5px solid rgba(255,255,255,0.15);
+      border-radius: 0.75rem; padding: 14px 18px;
+      color: #fff; font-family: inherit; font-size: 14px;
+      outline: none; transition: border-color .2s ease;
+      resize: none;
+    }
+    .form-field::placeholder { color: rgba(255,255,255,0.3); }
+    .form-field:focus { border-color: #f3c148; }
+
     /* Podcast rows */
     .podcast-row { transition: padding-left .2s ease, background .2s ease; }
     .podcast-row:hover { padding-left: 0.75rem; background: rgba(255,255,255,.02); }
@@ -31,6 +49,39 @@
 </head>
 <body class="bg-[#0B0B0B] text-white font-sans overflow-x-hidden">
 
+
+  <!-- ── MODAL MENTORÍA ───────────────────────────────────────────────────── -->
+  <div id="mentoria-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 opacity-0 pointer-events-none">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="modal-card relative bg-[#111110] border border-white/10 rounded-t-[2rem] sm:rounded-[2rem] p-8 md:p-12 w-full sm:max-w-lg max-h-[92vh] overflow-y-auto translate-y-8">
+
+      <!-- Cerrar -->
+      <button onclick="closeModal()" class="absolute top-5 right-6 text-gray-500 hover:text-white transition text-3xl leading-none font-light">×</button>
+
+      <p class="uppercase tracking-[0.25em] text-xs text-[#f3c148] mb-3">Mentoría 1 a 1</p>
+      <h3 class="text-2xl md:text-3xl font-light mb-8 leading-tight">Solicita tu plaza</h3>
+
+      <form id="mentoria-form" onsubmit="submitForm(event)" class="space-y-4">
+        <input type="text"  name="nombre"   placeholder="Nombre *" required class="form-field"/>
+        <input type="tel"   name="telefono" placeholder="Teléfono *" required class="form-field"/>
+        <input type="email" name="email"    placeholder="Email *" required class="form-field"/>
+        <input type="text"  name="profesion" placeholder="Situación actual / Profesión *" required class="form-field"/>
+        <textarea name="objetivo" rows="4" placeholder="Objetivo con la mentoría — qué quieres conseguir a nivel de marketing y empresa *" required class="form-field"></textarea>
+
+        <!-- Estado -->
+        <div id="form-success" class="hidden text-[#f3c148] text-sm py-2">
+          ✓ Solicitud enviada. Alba se pondrá en contacto contigo pronto.
+        </div>
+        <div id="form-error" class="hidden text-red-400 text-sm py-2">
+          Algo ha ido mal. Escríbenos directamente a alba@trainingnorte.com
+        </div>
+
+        <button type="submit" id="form-btn" class="w-full border border-white/30 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition mt-2">
+          Enviar solicitud
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
   <section id="top" class="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -218,9 +269,9 @@
               <p>Visión a largo plazo</p>
             </div>
           </div>
-          <a href="#" class="inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
+          <button onclick="openModal()" class="inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition cursor-pointer">
             Solicitar acceso
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -390,7 +441,7 @@
           <p class="text-gray-300 leading-relaxed mb-8 md:mb-10 text-sm md:text-base flex-1">
             Accede a la formación y metodología que ya han utilizado cientos de entrenadores en España, México y Argentina.
           </p>
-          <a href="https://www.academiatn.com/" target="_blank" class="inline-block bg-white text-black px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-gray-200 transition font-medium">
+          <a href="https://www.academiatn.com/" target="_blank" class="inline-block border border-white/30 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
             Academia TN
           </a>
         </div>
@@ -399,7 +450,7 @@
           <p class="text-gray-300 leading-relaxed mb-8 md:mb-10 text-sm md:text-base flex-1">
             Programación profesional, estructura y soporte continuo para boxes que buscan elevar su nivel.
           </p>
-          <a href="https://trainingnorte.com/boxes/" target="_blank" class="inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
+          <a href="https://trainingnorte.com/boxes/" target="_blank" class="inline-block border border-white/30 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
             Reservar llamada
           </a>
         </div>
@@ -408,9 +459,9 @@
           <p class="text-gray-300 leading-relaxed mb-8 md:mb-10 text-sm md:text-base flex-1">
             Trabajo de forma privada con un máximo de dos proyectos al mes. Para profesionales que ya están construyendo.
           </p>
-          <a href="#mentoria" class="inline-block border border-white/20 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition">
+          <button onclick="openModal()" class="inline-block border border-white/30 px-8 py-4 rounded-full uppercase text-sm tracking-wider hover:bg-white hover:text-black transition cursor-pointer">
             Mentoría 1 a 1
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -440,7 +491,7 @@
         <div>
           <p class="text-xs uppercase tracking-widest text-gray-600 mb-4 md:mb-5">Conecta</p>
           <ul class="space-y-2 md:space-y-3 text-sm text-gray-400">
-            <li><a href="#" class="hover:text-[#f3c148] transition">Instagram ↗</a></li>
+            <li><a href="https://www.instagram.com/albaestrada.coach" target="_blank" class="hover:text-[#f3c148] transition">Instagram ↗</a></li>
             <li><a href="#" class="hover:text-[#f3c148] transition">YouTube ↗</a></li>
             <li><a href="#" class="hover:text-[#f3c148] transition">Newsletter</a></li>
           </ul>
@@ -466,6 +517,50 @@
   </footer>
 
   <script>
+    // ── Modal mentoría ───────────────────────────────────────────────────────
+    const modal = document.getElementById('mentoria-modal');
+
+    function openModal() {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Envío formulario (formsubmit.co — sin backend) ───────────────────────
+    async function submitForm(e) {
+      e.preventDefault();
+      const btn = document.getElementById('form-btn');
+      const ok  = document.getElementById('form-success');
+      const err = document.getElementById('form-error');
+      btn.textContent = 'Enviando…';
+      btn.disabled = true;
+
+      const data = new FormData(e.target);
+      data.append('_subject', 'Nueva solicitud de Mentoría 1 a 1');
+      data.append('_template', 'table');
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/alba@trainingnorte.com', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: data
+        });
+        if (res.ok) {
+          ok.classList.remove('hidden');
+          e.target.reset();
+          btn.textContent = 'Enviado ✓';
+        } else { throw new Error(); }
+      } catch {
+        err.classList.remove('hidden');
+        btn.textContent = 'Enviar solicitud';
+        btn.disabled = false;
+      }
+    }
+
     // ── Scroll reveal ────────────────────────────────────────────────────────
     const io = new IntersectionObserver(
       entries => entries.forEach(e => {
