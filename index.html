@@ -580,6 +580,9 @@
       }
     }
 
+    // ── Abrir modal si la URL tiene #solicitar ───────────────────────────────
+    if (window.location.hash === '#solicitar') openModal();
+
     // ── Scroll reveal ────────────────────────────────────────────────────────
     const io = new IntersectionObserver(
       entries => entries.forEach(e => {
