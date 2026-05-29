@@ -39,6 +39,14 @@
     }
     .form-field::placeholder { color: rgba(255,255,255,0.3); }
     .form-field:focus { border-color: #f3c148; }
+    .form-field.error { border-color: #f87171 !important; }
+    .form-field.valid { border-color: rgba(255,255,255,0.3); }
+    .field-error { color: #f87171; font-size: 12px; margin-top: 5px; padding-left: 4px; display: none; }
+    .field-error.show { display: block; }
+    /* Phone prefix wrapper */
+    .phone-wrapper { position: relative; }
+    .phone-prefix { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.5); font-size: 14px; pointer-events: none; }
+    .phone-wrapper .form-field { padding-left: 32px; }
 
     /* Podcast rows */
     .podcast-row { transition: padding-left .2s ease, background .2s ease; }
@@ -63,11 +71,19 @@
       <h3 class="text-2xl md:text-3xl font-light mb-8 leading-tight">Solicita tu plaza</h3>
 
       <form id="mentoria-form" onsubmit="submitForm(event)" class="space-y-4">
-        <input type="text"  name="nombre"   placeholder="Nombre *" required class="form-field"/>
-        <input type="tel"   name="telefono" placeholder="Teléfono *" required class="form-field"/>
-        <input type="email" name="email"    placeholder="Email *" required class="form-field"/>
-        <input type="text"  name="profesion" placeholder="Situación actual / Profesión *" required class="form-field"/>
-        <textarea name="objetivo" rows="4" placeholder="Objetivo con la mentoría — qué quieres conseguir a nivel de marketing y empresa *" required class="form-field"></textarea>
+        <input type="text" name="nombre" id="field-nombre" placeholder="Nombre *" required class="form-field" autocomplete="name"/>
+        <p class="field-error" id="err-nombre">Introduce tu nombre completo</p>
+        <div class="phone-wrapper">
+          <span class="phone-prefix">+</span>
+          <input type="tel" name="telefono" id="field-telefono" placeholder="34 612 345 678 *" required class="form-field" autocomplete="tel"/>
+        </div>
+        <p class="field-error" id="err-telefono">Introduce un teléfono válido con código de país (ej: 34 612 345 678)</p>
+        <input type="email" name="email" id="field-email" placeholder="Email *" required class="form-field" autocomplete="email"/>
+        <p class="field-error" id="err-email">Introduce un email válido</p>
+        <input type="text" name="profesion" id="field-profesion" placeholder="Situación actual / Profesión *" required class="form-field"/>
+        <p class="field-error" id="err-profesion">Describe tu situación actual</p>
+        <textarea name="objetivo" id="field-objetivo" rows="4" placeholder="Objetivo con la mentoría — qué quieres conseguir a nivel de marketing y empresa *" required class="form-field"></textarea>
+        <p class="field-error" id="err-objetivo">Cuéntanos qué quieres conseguir</p>
 
         <!-- Estado -->
         <div id="form-success" class="hidden text-[#f3c148] text-sm py-2">
@@ -549,16 +565,65 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    // ── Envío formulario (formsubmit.co — sin backend) ───────────────────────
+    // ── Validación ───────────────────────────────────────────────────────────
+    const rules = {
+      nombre:   v => v.trim().length >= 2,
+      telefono: v => /^[0-9\s\-\(\)]{7,20}$/.test(v.trim()),
+      email:    v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+      profesion:v => v.trim().length >= 2,
+      objetivo: v => v.trim().length >= 10,
+    };
+
+    function showError(name, show) {
+      const field = document.getElementById('field-' + name);
+      const msg   = document.getElementById('err-' + name);
+      if (!field || !msg) return;
+      field.classList.toggle('error', show);
+      msg.classList.toggle('show', show);
+    }
+
+    function validateField(name, value) {
+      const ok = rules[name] ? rules[name](value) : true;
+      showError(name, !ok);
+      return ok;
+    }
+
+    // Validación en tiempo real al salir del campo
+    ['nombre','telefono','email','profesion','objetivo'].forEach(name => {
+      const el = document.getElementById('field-' + name);
+      if (!el) return;
+      el.addEventListener('blur', () => {
+        if (el.value.trim()) validateField(name, el.value);
+      });
+      el.addEventListener('input', () => {
+        if (el.classList.contains('error')) validateField(name, el.value);
+      });
+    });
+
+    // ── Envío formulario (w3forms) ───────────────────────────────────────────
     async function submitForm(e) {
       e.preventDefault();
+      // Validar todos los campos antes de enviar
+      const fields = ['nombre','telefono','email','profesion','objetivo'];
+      let allOk = true;
+      fields.forEach(name => {
+        const el = document.getElementById('field-' + name);
+        if (el && !validateField(name, el.value)) allOk = false;
+      });
+      if (!allOk) return;
+
       const btn = document.getElementById('form-btn');
       const ok  = document.getElementById('form-success');
       const err = document.getElementById('form-error');
       btn.textContent = 'Enviando…';
       btn.disabled = true;
 
+      // Prepend + al teléfono antes de enviar
+      const telField = document.getElementById('field-telefono');
+      const telValue = '+' + telField.value.trim();
+
       const data = new FormData(e.target);
+      data.set('telefono', telValue);
       data.append('access_key', '1841c321-2676-4b13-8fac-6ad8e2400447');
       data.append('subject', 'Nueva solicitud de Mentoría 1 a 1');
       data.append('from_name', 'Web Alba Estrada');
@@ -572,6 +637,7 @@
         if (res.ok) {
           ok.classList.remove('hidden');
           e.target.reset();
+          fields.forEach(n => showError(n, false));
           btn.textContent = 'Enviado ✓';
         } else { throw new Error(); }
       } catch {
