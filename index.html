@@ -559,11 +559,12 @@
       btn.disabled = true;
 
       const data = new FormData(e.target);
-      data.append('_subject', 'Nueva solicitud de Mentoría 1 a 1');
-      data.append('_template', 'table');
+      data.append('access_key', '1841c321-2676-4b13-8fac-6ad8e2400447');
+      data.append('subject', 'Nueva solicitud de Mentoría 1 a 1');
+      data.append('from_name', 'Web Alba Estrada');
 
       try {
-        const res = await fetch('https://formsubmit.co/ajax/alba@trainingnorte.com', {
+        const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Accept': 'application/json' },
           body: data
