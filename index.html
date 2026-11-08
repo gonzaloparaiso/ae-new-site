@@ -639,12 +639,24 @@
           e.target.reset();
           fields.forEach(n => showError(n, false));
           btn.textContent = 'Enviado ✓';
+          avisarLead();
         } else { throw new Error(); }
       } catch {
         err.classList.remove('hidden');
         btn.textContent = 'Enviar solicitud';
         btn.disabled = false;
       }
+    }
+
+    // ── Aviso de Lead a la página que nos enmarca ────────────────────────────
+    // Esta web se ve dentro de un iframe en albaestrada.com, que es la que lleva el píxel de Meta.
+    // Al enviarse bien la solicitud se le avisa, sin datos personales, y ella lanza el Lead.
+    // Solo se avisa a albaestrada.com: si la web se abre suelta o en otro sitio, no pasa nada.
+    function avisarLead() {
+      if (window.parent === window) return;
+      ['https://albaestrada.com', 'https://www.albaestrada.com'].forEach(function (destino) {
+        try { window.parent.postMessage({ tipo: 'ae-lead', formulario: 'mentoria-1a1' }, destino); } catch (e) {}
+      });
     }
 
     // ── Abrir modal si la URL tiene #solicitar ───────────────────────────────
